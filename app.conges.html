@@ -1,0 +1,1954 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+body {
+    display: grid;
+    grid-template-columns: auto max-content auto;
+}
+
+.reco-form {
+    display: grid;
+    grid-template-columns: max-content auto max-content;
+}
+
+.reco-form>.reco-line {
+    grid-column: 1 / span 3;
+}
+
+.reco-bar.reco-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.reco-table {
+    display: grid;
+}
+
+.reco-title1 {
+    text-align: center;
+}
+
+button {
+    cursor: pointer;
+}
+
+input {
+    width: 100%;
+}
+
+select {
+    width: 100%;
+}
+
+.reco-close {
+    display: flex;
+    float: right;
+}
+
+.reco-tpl {
+    display: none;
+}
+
+#reco-templates {
+    display: none;
+}
+    </style>
+    <style>
+body {
+    background-color: darkgray;
+    font-family: Arial, sans-serif;
+}
+
+#reco-root {
+    border: 1px solid darkgray;
+    background-color: white;
+}
+
+.reco-form {
+    background-color: #f0f0f0;
+}
+
+.reco-panel {
+    background-color: #f0f0f0;
+}
+
+.reco-table>.reco-header {
+    font-weight: bold;
+    border: thin solid black;
+}
+
+.reco-table>.reco-header.reco-label {
+    color: blue;
+}
+
+.reco-table>.reco-cell {
+    border: thin solid black;
+}
+
+.reco-title1 {
+    font-weight: bold;
+}
+
+.reco-title2 {
+    font-weight: bold;
+}
+
+.reco-label,
+.reco-label * {
+    font-weight: bold;
+    color: blue;
+}
+
+.reco-value,
+.reco-value * {
+    font-weight: bold;
+    color: purple;
+    background-color: white !important;
+}
+
+.reco-value>input {
+    background-color: lightyellow !important;
+}
+.reco-value>select {
+    background-color: lightyellow !important;
+}
+
+.reco-danger {
+    background-color: red;
+    color: white;
+}
+
+button {
+    background-color: gainsboro;
+    border: 2px solid black;
+    font-weight: bold;
+}
+
+button:hover {
+    border: 2px solid cyan;
+}
+
+button:active {
+    border: 2px solid yellow;
+}
+
+.reco-close {
+    color:white;
+    background-color: red;
+}
+    </style>
+    <style>
+body * {
+    font-size: 1em;
+}
+
+#reco-root {
+    min-width: 20em;
+    padding: 0.25em;
+}
+
+.reco-form {
+    padding-bottom: 0.5em;
+    padding-left: 0.5em;
+}
+
+.reco-form>* {
+    margin-right: 0.5em;
+    margin-top: 0.5em;
+}
+
+.reco-bar {
+    margin-right: 0.5em;
+}
+
+#reco-root>.reco-bar {
+    margin: 0.25em;
+}
+
+.reco-bar>* {
+    margin-right: 0.5em;
+}
+
+.reco-panel {
+    padding: 0.5em;
+}
+
+.reco-panel>* {
+    margin-right: 0.5em;
+}
+
+.reco-sep {
+    padding: 0.5em;
+}
+
+.reco-sep hr {
+    margin: 0;
+}
+
+.reco-table {
+    overflow-y: scroll;
+    overflow-x: visible;
+    max-height: 15em;
+}
+
+.reco-table>.reco-header {
+    padding: 0.25em;
+}
+
+.reco-table>.reco-cell {
+    padding: 0.25em;
+}
+
+.reco-bloc {
+    padding-left: 0.5em !important;
+}
+
+.reco-bloc>* {
+    margin-right: 0.5em;
+}
+
+.reco-title1 {
+    font-size: 1.5em;
+    padding: 0.25em;
+}
+
+.reco-title2 {
+    font-size: 1.2em;
+    margin-left: 0.25em;
+}
+
+.reco-label,
+.reco-label * {
+    padding-left: 0.25em;
+    padding-top: 0.25em;
+}
+
+button {
+    cursor: pointer;
+}
+    </style>
+    <style>
+#conges-bar-top * {
+    padding: 5px !important;
+}
+
+.conges-jour {
+    text-align: center;
+    font-size: 0.8em;
+}
+
+.conges-mois {
+    text-align: center;
+}
+
+#conges-types * {
+    padding-left: 0.25em;
+    padding-top: 0.25em;
+}
+
+#calendrier {
+    max-height: none;
+    overflow: visible;
+    margin-left: 0.5em;
+}
+
+.conges-jour-am,
+.conges-jour-pm {
+    min-width: 1em;
+}
+
+.conges-conso {
+    display: inline-block;
+    padding-left: 0.25em;
+    padding-right: 0.25em;
+    background-color: white !important;
+    width: 2em !important;
+}
+
+.conges-quota {
+    padding-left: 0.25em;
+    padding-right: 0.25em;
+    background-color: lightyellow !important;
+    border: none !important;
+    width: 2em !important;
+}
+
+.sans-quota {
+    visibility: hidden;
+    border: none !important;
+}
+
+.avec-quota {
+    visibility: visible;
+}
+
+.jourSem {
+    border-right: none !important;
+    cursor: pointer;
+}
+
+.jourMois {
+    border-left: none !important;
+    cursor: pointer;
+}
+
+.am {
+    border-right: none !important;
+    width: 1em !important;
+    cursor: pointer;
+}
+
+.pm {
+    border-left: none !important;
+    width: 1em !important;
+    cursor: pointer;
+}
+
+.weekend {
+    background-color: lightgray !important;
+}
+
+.jourInexistant {
+    visibility: hidden !important;
+}
+
+button.typeConges {
+    width: 4em !important;
+    border: 4px solid transparent;
+}
+
+button.typeConges.courant {
+    border: 4px solid black;
+}
+
+.FE {
+    background-color: yellow !important;
+}
+
+.CP {
+    background-color: cyan !important;
+}
+
+.RTT {
+    background-color: lightgreen !important;
+}
+
+.ANC {
+    background-color: orange !important;
+}
+
+.FLEX {
+    background-color: pink !important;
+}
+    </style>
+
+</head>
+<body>
+ <div></div>
+    <div id="reco-root">
+    </div>
+    <div></div>
+    <div id="reco-templates">
+        <div id="RecoPages.CongesCalendrierPage">
+        <button @name="close" reco="" class="reco-close">X</button>
+        <div id="conges-bar-top" class="reco-bar reco-center">
+            <span class="reco-title1">App Congés</span>
+            <span class="reco-title2">Fichier</span>
+            <span class="reco-value" reco="@innertext" @innertext="/RecoPageData/CongesCalendrierPage/nomFichier">Mon Fichier</span>
+            <span class="reco-title2">Année</span>
+            <span class="reco-value" reco="@innertext" @innertext="/RecoPageData/CongesCalendrierPage/annee">AAAA</span>
+            <button @name="enregistrerFichier" reco="@info" @info="enregistrerFichier">Enregistrer</button>
+            <button @name="enregistrerFichierSous" reco="@info" @info="enregistrerFichierSous">Enregistrer sous ...</button>
+        </div>
+        <div id="conges-types" class="reco-panel" style="display: grid; grid-template-columns: repeat(5,auto); ">
+            <div tpl="tplTypeConges" n="5" @iterator="@typeCongesListeIds" class="reco-tpl"></div>
+            <div tpl="tplTypeConges">
+                <button class="reco-header reco-label typeConges" reco="@innertext,@class,@info" @name="btTypeConges" @info="/TypeConges/@iterated/id" @class="/TypeConges/@iterated/cssClassBt" @innertext="/TypeConges/@iterated/id">Type</button>
+                <div class="reco-header reco-value conges-conso" reco="@innertext" @innertext="/TypeConges/@iterated/conso">Conso</div>
+                <span class="reco-header reco-label" reco="@class" @class="/TypeConges/@iterated/cssClassQuota">/</span>
+                <input type="number" class="reco-header reco-value conges-quota" reco="@value,@class" @class="/TypeConges/@iterated/cssClassQuota" @value="/TypeConges/@iterated/quota">
+            </div>
+        </div>
+        <div id="calendrier" class="reco-table" style="grid-template-columns: repeat(48,max-content);">
+
+            <div tpl="tplMois" n="12" @iterator="@moisListeIds" class="reco-tpl"></div>
+            <div tpl="tplMois" class="reco-header reco-label conges-mois" style="grid-column: span 4;" reco="@innertext" @innertext="/Mois/@iterated/labelCourt">Mois</div>
+
+            <div tpl="tplJours" n="372" @iterator="@jourListeIds" class="reco-tpl"></div>
+            <div tpl="tplJours" class="conges-jour reco-cell reco-value jourSem" reco="@innertext,@class,@info" @name="jourSem" @info="/Jour/@iterated/id" @class="/Jour/@iterated/clsJour" @innertext="/Jour/@iterated/jourSemLabelCourt">jj</div>
+            <div tpl="tplJours" class="conges-jour reco-cell reco-value jourMois" reco="@innertext,@class,@info" @name="jourMois" @info="/Jour/@iterated/id" @class="/Jour/@iterated/clsJour" @innertext="/Jour/@iterated/jourMois">nn</div>
+            <div tpl="tplJours" class="conges-jour-am reco-cell reco-value am" reco="@class,@info" @name="jourAM" @info="/Jour/@iterated/id" @class="/Jour/@iterated/clsJourAM"></div>
+            <div tpl="tplJours" class="conges-jour-pm reco-cell reco-value pm" reco="@class,@info" @name="jourPM" @info="/Jour/@iterated/id" @class="/Jour/@iterated/clsJourPM"></div>
+
+        </div>
+     </div>
+        <div id="RecoPages.CongesHomePage">
+        <div class="reco-title1">Bienvenue dans l'application "Congés"</div>
+        <div class="reco-form">
+
+            <div class="reco-label"><span>Année</span></div>
+            <div class="reco-value"><input reco="@value" @value="/RecoPageData/CongesHomePage/nouvelleAnnee" type="number" value=""></div>
+            <div class="reco-bloc"><button @name="creerFichier" reco="@info" @info="creerFichier">Créer Fichier</button></div>
+        
+        </div>
+
+        <div class="reco-bar reco-center">
+            <button @name="ouvrirFichier" reco="@info" @info="ouvrirFichier">Ouvrir Fichier</button>
+        </div>
+        
+     </div>
+    </div>
+    <script>"use strict";
+(() => {
+  // lib.reco/src/reco-core.js
+  var Reco = {
+    // --------------------------------------------------------------------------------------------
+    logUI: function(...args) {
+      console.log(...args);
+      const logElt = document.getElementById("console");
+      if (!logElt)
+        return;
+      let first = true;
+      for (let arg of args) {
+        if (typeof arg === "object") {
+          if (!first)
+            logElt.textContent += "\n";
+          logElt.textContent += JSON.stringify(arg, void 0, 4) + " ";
+        } else
+          logElt.textContent += arg + " ";
+        first = false;
+      }
+      logElt.textContent += "\n";
+    },
+    // --------------------------------------------------------------------------------------------
+    YYYYMMDD2Date: function(value) {
+      if (!value)
+        return void 0;
+      const match = value.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+      if (!match)
+        return void 0;
+      const year = parseInt(match[1], 10);
+      const month = parseInt(match[2], 10) - 1;
+      const day = parseInt(match[3], 10);
+      return new Date(year, month, day);
+    },
+    // --------------------------------------------------------------------------------------------
+    Date2YYYYMMDD: function(value) {
+      if (!value)
+        return void 0;
+      const year = value.getFullYear();
+      const month = (value.getMonth() + 1).toString().padStart(2, "0");
+      const day = value.getDate().toString().padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    },
+    // --------------------------------------------------------------------------------------------
+    evalDotExp: function(root, dotExp) {
+      const parts = dotExp.split(".");
+      let elt = root;
+      for (const part of parts) {
+        if (elt === void 0 || elt === null)
+          return void 0;
+        elt = elt[part];
+      }
+      return elt;
+    }
+  };
+  var RecoListDict = class _RecoListDict {
+    _keys;
+    _values;
+    _listeners;
+    _name;
+    constructor(keys = [], values = [], name = void 0) {
+      this._keys = keys;
+      this._values = values;
+      this._listeners = [];
+      this._name = name;
+    }
+    addListener(listener) {
+      if (this._listeners.indexOf(listener) !== -1)
+        return;
+      this._listeners.push(listener);
+    }
+    removeListener(listener) {
+      const index = this._listeners.indexOf(listener);
+      if (index !== -1) {
+        this._listeners.splice(index, 1);
+      }
+    }
+    clearData() {
+      this._keys = [];
+      this._values = [];
+    }
+    get name() {
+      return this._name;
+    }
+    isKey(key) {
+      return this._keys.indexOf(key) !== -1;
+    }
+    removeKey(key) {
+      const index = this._keys.indexOf(key);
+      if (index !== -1) {
+        const oldVal = this._values[index];
+        this._keys.splice(index, 1);
+        this._values.splice(index, 1);
+        this.notifyListeners("remove", key, oldVal, void 0);
+        return true;
+      }
+      return false;
+    }
+    removeAt(index) {
+      if (index >= 0 && index < this._keys.length) {
+        const oldVal = this._values[index];
+        this._keys.splice(index, 1);
+        this._values.splice(index, 1);
+        this.notifyListeners("remove", "", oldVal, void 0);
+        return true;
+      }
+      return false;
+    }
+    removeValue(value) {
+      const index = this._values.indexOf(value);
+      if (index !== -1) {
+        const oldVal = this._values[index];
+        this._keys.splice(index, 1);
+        this._values.splice(index, 1);
+        this.notifyListeners("remove", "", oldVal, void 0);
+        return true;
+      }
+      return false;
+    }
+    get keys() {
+      const copy = [];
+      copy.push(...this._keys);
+      return copy;
+    }
+    get values() {
+      return this._values;
+    }
+    getValueFor(key) {
+      const index = this._keys.indexOf(key);
+      if (index !== -1) {
+        return this._values[index];
+      }
+      return void 0;
+    }
+    getKeyAt(index) {
+      if (index >= 0 && index < this._keys.length) {
+        return this._keys[index];
+      }
+      return void 0;
+    }
+    getValueAt(index) {
+      if (index >= 0 && index < this._values.length) {
+        return this._values[index];
+      }
+      return void 0;
+    }
+    setValue(key, value, index = -1) {
+      if (index == -1) {
+        const currentIndex = this._keys.indexOf(key);
+        if (currentIndex !== -1) {
+          const oldVal = this._values[currentIndex];
+          this._values[currentIndex] = value;
+          if (oldVal !== value)
+            this.notifyListeners("update", key, oldVal, value);
+          return;
+        } else {
+          this._keys.push(key);
+          this._values.push(value);
+          this.notifyListeners("add", key, void 0, value);
+        }
+        return;
+      } else {
+        const currentIndex = this._keys.indexOf(key);
+        if (currentIndex !== -1) {
+          const oldVal = this._values[currentIndex];
+          this._keys.splice(currentIndex, 1, key);
+          this._values.splice(currentIndex, 1, value);
+          this._keys.splice(index, 0, key);
+          this._values.splice(index, 0, value);
+          if (oldVal !== value)
+            this.notifyListeners("update", key, oldVal, value);
+        } else {
+          this._keys.splice(index, 0, key);
+          this._values.splice(index, 0, value);
+          this.notifyListeners("add", key, void 0, value);
+        }
+      }
+    }
+    search(filterFct) {
+      const newKeys = [];
+      const newValues = [];
+      for (let i = 0; i < this._keys.length; i++) {
+        if (filterFct(this._keys[i], this._values[i])) {
+          newKeys.push(this._keys[i]);
+          newValues.push(this._values[i]);
+        }
+      }
+      return new _RecoListDict(newKeys, newValues);
+    }
+    length() {
+      return this._keys.length;
+    }
+    notifyListeners(action, key, oldVal, newVal) {
+      for (const listener of this._listeners) {
+        listener.notifyChange(action, key, oldVal, newVal);
+      }
+    }
+  };
+
+  // lib.reco/src/reco-app.js
+  var RECO_DEFAULT_DB_NAME = "reco-default";
+  var RECO_FAT_DB_NAME = "reco-fat";
+  var RecoTypeNames;
+  (function(RecoTypeNames2) {
+    RecoTypeNames2["string"] = "string";
+    RecoTypeNames2["strings"] = "strings";
+    RecoTypeNames2["number"] = "number";
+    RecoTypeNames2["numbers"] = "numbers";
+    RecoTypeNames2["boolean"] = "boolean";
+    RecoTypeNames2["booleans"] = "booleans";
+    RecoTypeNames2["Date"] = "Date";
+    RecoTypeNames2["Dates"] = "Dates";
+    RecoTypeNames2["List"] = "List";
+    RecoTypeNames2["Ref"] = "Ref";
+  })(RecoTypeNames || (RecoTypeNames = {}));
+  var RecoApp = class {
+    listeners = [];
+    listening = true;
+    dbMap = {};
+    backupStack = {};
+    name;
+    metaClassListDict = new RecoListDict();
+    constructor(name) {
+      this.metaClassListDict = new RecoListDict();
+      this.name = name;
+      this.getDb(RECO_DEFAULT_DB_NAME).addListener(this);
+      this.getDb(RECO_FAT_DB_NAME).addListener(this);
+    }
+    getDb(dbName) {
+      let db = this.dbMap[dbName];
+      if (!db) {
+        db = new RecoListDict([], [], dbName);
+        this.dbMap[dbName] = db;
+        db.addListener(this);
+      }
+      return db;
+    }
+    setDb(dbName, db) {
+      db.addListener(this);
+      return this.dbMap[dbName] = db;
+    }
+    addListener(listener) {
+      if (this.listeners.indexOf(listener) !== -1)
+        return;
+      this.listeners.push(listener);
+    }
+    removeListener(listener) {
+      const index = this.listeners.indexOf(listener);
+      if (index !== -1) {
+        this.listeners.splice(index, 1);
+      }
+    }
+    notifyChange(action, key, oldVal, newVal) {
+      if (!this.listening)
+        return;
+      if (action == "remove" && key.endsWith("/id"))
+        console.log(">     notifyChange delete object ", key);
+      else if (action == "add" && key.endsWith("/id"))
+        console.log(">     notifyChange create object ", key);
+      else
+        console.log(">     notifyChange", action, key, oldVal, newVal);
+      for (const listener of this.listeners) {
+        listener.notifyChange(action, key, oldVal, newVal);
+      }
+    }
+    startTx(dbName) {
+      if (!this.backupStack[dbName])
+        this.backupStack[dbName] = [];
+      this.backupStack[dbName].push(this.toJson(dbName));
+    }
+    commitTx(dbName) {
+      this.backupStack[dbName].pop();
+    }
+    rollbackTx(dbName) {
+      const json = this.backupStack[dbName].pop();
+      this.fromJson(json, dbName);
+    }
+    toJson(dbName, persistOnly = false) {
+      const json = {};
+      const db = this.dbMap[dbName];
+      const keys = db.keys;
+      for (let i = 0; i < keys.length; i++) {
+        const key = keys[i];
+        const [, metaClassName, id, fieldName] = key.split("/");
+        const metaClass = this.metaClassListDict.getValueFor(metaClassName);
+        if (!metaClass?.persist && persistOnly)
+          continue;
+        const metaField = metaClass?.fields.getValueFor(fieldName);
+        if (metaField && !metaField?.persist && persistOnly)
+          continue;
+        const value = this.toJsonConvert(metaClass, metaField, keys[i], db.getValueFor(keys[i]));
+        if (value === void 0)
+          continue;
+        json[keys[i]] = value;
+      }
+      return json;
+    }
+    toJsonConvert(metaClass, metaField, key, value) {
+      if (metaField && metaField.typeName === RecoTypeNames.Date) {
+        value = Reco.Date2YYYYMMDD(value);
+      }
+      return value;
+    }
+    fromJson(json, dbName) {
+      const db = this.dbMap[dbName];
+      for (let key in json) {
+        const [, metaClassName, id, fieldName] = key.split("/");
+        const metaClass = this.metaClassListDict.getValueFor(metaClassName);
+        const metaField = metaClass?.fields.getValueFor(fieldName);
+        db.setValue(key, this.fromJsonConvert(metaClass, metaField, key, json[key]));
+      }
+    }
+    fromJsonConvert(metaClass, metaField, key, value) {
+      if (metaField && metaField.typeName === RecoTypeNames.Date) {
+        value = Reco.YYYYMMDD2Date(value);
+      }
+      return value;
+    }
+    existingObject(metaClass, id) {
+      if (!id)
+        return void 0;
+      const dbName = metaClass.dbName;
+      if (this.getDb(dbName).getValueFor(`/${metaClass.name}/${id}/id`))
+        return new metaClass.targetAppClass(this, id, metaClass);
+      return void 0;
+    }
+    existingObjects(metaClass, ids) {
+      const objects = [];
+      for (const id of ids) {
+        const obj = this.existingObject(metaClass, id);
+        if (obj)
+          objects.push(obj);
+      }
+      return objects;
+    }
+    getObject(metaClass, id) {
+      return new metaClass.targetAppClass(this, id, metaClass);
+    }
+    getObjects(metaClass, ids) {
+      return ids.map((key) => {
+        return new metaClass.targetAppClass(this, key, metaClass);
+      });
+    }
+    getAllObjectIds(metaClass) {
+      const ids = [];
+      const keys = this.getDb(metaClass.dbName).keys;
+      for (let key of keys) {
+        const [, metaClassName, id, fieldName] = key.split("/");
+        if (metaClassName === metaClass.name && fieldName === "id") {
+          ids.push(id);
+        }
+      }
+      return ids;
+    }
+    getAllObjects(metaClass) {
+      const ids = this.getAllObjectIds(metaClass);
+      return ids.map((key) => {
+        return new metaClass.targetAppClass(this, key, metaClass);
+      });
+    }
+    deleteObjects(metaClass, ids) {
+      if (ids.length === 0)
+        return;
+      for (const metaField of metaClass.fields.values) {
+        if (!metaField)
+          continue;
+        if (metaField.cascadeDel && metaField.typeName == RecoTypeNames.Ref) {
+          for (let id of ids) {
+            const obj = this.existingObject(metaClass, id);
+            if (!obj)
+              continue;
+            const refObj = obj[metaField.name];
+            if (refObj)
+              this.deleteObjects(metaField.targetMetaClass, [refObj.$id]);
+          }
+        } else if (metaField.cascadeDel && metaField.typeName == RecoTypeNames.List) {
+          for (let id of ids) {
+            const obj = this.existingObject(metaClass, id);
+            if (!obj)
+              continue;
+            const idsToDelete = obj[metaField.name];
+            if (idsToDelete.length > 0) {
+              this.deleteObjects(metaField.targetMetaClass, idsToDelete);
+            }
+          }
+        }
+      }
+      for (const aMetaClass of this.metaClassListDict.values) {
+        if (!aMetaClass)
+          continue;
+        for (const metaField of aMetaClass.fields.values) {
+          if (!metaField)
+            continue;
+          if (metaField.typeName == RecoTypeNames.Ref && metaField.targetMetaClass == metaClass) {
+            for (let anObj of this.getAllObjects(aMetaClass)) {
+              if (ids.includes(anObj[metaField.name]))
+                anObj[metaField.name] = void 0;
+            }
+          }
+        }
+      }
+      const keys = this.getDb(metaClass.dbName).keys;
+      for (let key of keys) {
+        const [, metaClassName, id, fieldName] = key.split("/");
+        if (metaClassName === metaClass.name && ids.includes(id)) {
+          try {
+            this.listening = fieldName === "id";
+            this.getDb(metaClass.dbName).removeKey(key);
+          } finally {
+            this.listening = true;
+          }
+        }
+      }
+    }
+    searchObjects(metaClass, filter) {
+      return this.getAllObjects(metaClass).filter(filter);
+    }
+    searchObjectsByModel(metaClass, model) {
+      const filter = (obj) => {
+        for (const key in model) {
+          const objValue = obj[key];
+          if (model[key] instanceof RegExp) {
+            if (!model[key].test(objValue))
+              return false;
+          } else {
+            if (objValue !== model[key])
+              return false;
+          }
+        }
+        return true;
+      };
+      return this.searchObjects(metaClass, filter);
+    }
+  };
+  var RecoMetaClass = class {
+    name;
+    dbName;
+    persist;
+    fields = new RecoListDict();
+    targetAppClass;
+    constructor(targetAppClass, dbName = RECO_DEFAULT_DB_NAME, persist = true) {
+      this.targetAppClass = targetAppClass;
+      this.persist = persist;
+      this.dbName = dbName;
+      targetAppClass["metaClass"] = this;
+      this.name = targetAppClass.name;
+      if (this.name.startsWith("_"))
+        this.name = this.name.substring(1);
+    }
+  };
+  var RecoMetaField = class {
+    metaClass;
+    name;
+    persist;
+    typeName = void 0;
+    targetMetaClass = void 0;
+    backMetaField = void 0;
+    cascadeDel = false;
+    constructor(metaClass, name, typeName, persist = true) {
+      this.metaClass = metaClass;
+      this.name = name;
+      this.typeName = typeName;
+      this.persist = persist;
+      this.metaClass.fields.setValue(this.name, this);
+    }
+    setTargetMetaClass(targetMetaClass, cascadeDel = false) {
+      this.targetMetaClass = targetMetaClass;
+      this.cascadeDel = cascadeDel;
+      return this;
+    }
+    setBackMetaField(backMetaField) {
+      this.backMetaField = backMetaField;
+      return this;
+    }
+  };
+  var RecoGenericClass = class {
+    $db;
+    $id;
+    $app;
+    $metaClass;
+    get $dbName() {
+      return this.$metaClass.dbName;
+    }
+    constructor(app, id, metaClass) {
+      this.$app = app;
+      this.$metaClass = metaClass;
+      this.$id = id ?? crypto.randomUUID();
+      this.$db = this.$app.getDb(this.$metaClass.dbName);
+      const objkey = "/" + metaClass.name + "/" + this.$id;
+      if (!this.$db.isKey(objkey + "/id"))
+        this.$db.setValue(objkey + "/id", this.$id);
+    }
+    delete() {
+      this.$app.deleteObjects(this.$metaClass, [this.$id]);
+    }
+    getField(fieldname) {
+      const fieldkey = "/" + this.$metaClass.name + "/" + this.$id + "/" + fieldname;
+      return this.$db.getValueFor(fieldkey);
+    }
+    setField(fieldname, value) {
+      const fieldkey = "/" + this.$metaClass.name + "/" + this.$id + "/" + fieldname;
+      this.$db.setValue(fieldkey, value);
+      return this;
+    }
+    setFields(fields) {
+      for (const fieldname in fields) {
+        this.setField(fieldname, fields[fieldname]);
+      }
+      return this;
+    }
+    getListIds(listname) {
+      const listfield = this.$metaClass.fields.getValueFor(listname);
+      if (!listfield)
+        throw new Error("List field not found: " + listname);
+      if (!listfield.targetMetaClass)
+        throw new Error("List field target meta class not found for: " + listname);
+      const listbackfield = listfield.backMetaField;
+      if (!listbackfield)
+        throw new Error("List field back reference not found for: " + listname);
+      const filter = (key, value) => {
+        return value == this.$id && key.startsWith(`/${listfield.targetMetaClass.name}/`) && key.endsWith(`/${listbackfield.name}`);
+      };
+      const foundKeys = this.$db.search(filter).keys;
+      const foundIds = foundKeys.map((key) => {
+        return key.split("/")[2];
+      });
+      return foundIds;
+    }
+  };
+
+  // lib.reco/src/reco-localstorage.js
+  var RecoLocalStorage = class {
+    app;
+    dbfat;
+    constructor(app) {
+      this.app = app;
+      this.dbfat = this.app.getDb(RECO_FAT_DB_NAME);
+      this.dbfat.clearData();
+      this.app.fromJson(JSON.parse(localStorage.getItem(RECO_FAT_DB_NAME) ?? "{}"), RECO_FAT_DB_NAME);
+    }
+    listFiles() {
+      const fileIds = this.dbfat.search((key, value) => {
+        const [, metaClassName, id, fieldName] = key.split("/");
+        return fieldName == "appName" && id == this.app.name;
+      });
+      return this.app.getObjects(RecoLocalStorageFile.metaClass, fileIds.values);
+    }
+    saveFile(name, content) {
+      let file = this.app.searchObjectsByModel(RecoLocalStorageFile.metaClass, { name, appName: this.app.name })[0];
+      if (!file) {
+        file = new RecoLocalStorageFile(this.app, void 0);
+        file.appName = this.app.name;
+        file.name = name;
+      }
+      file.size = content.length;
+      file.lastUpdate = /* @__PURE__ */ new Date();
+      localStorage.setItem("/" + this.app.name + "/" + name, content);
+      this.saveFat();
+    }
+    deleteFile(name) {
+      localStorage.removeItem("/" + this.app.name + "/" + name);
+      this.app.searchObjectsByModel(RecoLocalStorageFile.metaClass, { name, appName: this.app.name })[0]?.delete();
+      this.saveFat();
+    }
+    loadFile(name) {
+      return localStorage.getItem("/" + this.app.name + "/" + name) ?? void 0;
+    }
+    saveFat() {
+      localStorage.setItem(RECO_FAT_DB_NAME, JSON.stringify(this.app.toJson(RECO_FAT_DB_NAME)));
+    }
+  };
+  var RecoLocalStorageFile = class _RecoLocalStorageFile extends RecoGenericClass {
+    static metaClass;
+    constructor(app, id = void 0) {
+      super(app, id, _RecoLocalStorageFile.metaClass);
+    }
+    get id() {
+      return this.$id;
+    }
+    get name() {
+      return this.getField("name");
+    }
+    set name(value) {
+      this.setField("name", value);
+    }
+    get appName() {
+      return this.getField("appName");
+    }
+    set appName(value) {
+      this.setField("appName", value);
+    }
+    get size() {
+      return this.getField("size");
+    }
+    set size(value) {
+      this.setField("size", value);
+    }
+    get lastUpdate() {
+      return this.getField("lastUpdate");
+    }
+    set lastUpdate(value) {
+      this.setField("lastUpdate", value);
+    }
+    get lastUpdateYYYYMMDD() {
+      return Reco.Date2YYYYMMDD(this.lastUpdate);
+    }
+    set lastUpdateYYYYMMDD(value) {
+      this.lastUpdate = Reco.YYYYMMDD2Date(value);
+    }
+  };
+  var metaClassRecoLocalStorageFile = new RecoMetaClass(RecoLocalStorageFile, RECO_FAT_DB_NAME);
+  new RecoMetaField(metaClassRecoLocalStorageFile, "name", RecoTypeNames.string);
+  new RecoMetaField(metaClassRecoLocalStorageFile, "appName", RecoTypeNames.string);
+  new RecoMetaField(metaClassRecoLocalStorageFile, "size", RecoTypeNames.number);
+  new RecoMetaField(metaClassRecoLocalStorageFile, "lastUpdate", RecoTypeNames.Date);
+
+  // lib.reco/src/reco-browserfile.js
+  var RecoBrowserJsonFile = class {
+    // --------------------------------------------------------------------------------------------
+    fileExtension;
+    fileShowOption;
+    fileHandle = void 0;
+    fileContent = void 0;
+    get fileName() {
+      return this.fileHandle?.name ?? "";
+    }
+    // --------------------------------------------------------------------------------------------
+    async ensurePermission(handle, mode = "readwrite") {
+      const fsHandle = handle;
+      if (!fsHandle.queryPermission || !fsHandle.requestPermission)
+        return true;
+      const query = await fsHandle.queryPermission({ mode });
+      if (query === "granted")
+        return true;
+      const request = await fsHandle.requestPermission({ mode });
+      return request === "granted";
+    }
+    // --------------------------------------------------------------------------------------------
+    constructor(description, fileExtension = "json") {
+      this.fileExtension = fileExtension;
+      if (!Object.hasOwnProperty.call(window, "showOpenFilePicker"))
+        alert("window.showOpenFilePicker not supported!");
+      if (!Object.hasOwnProperty.call(window, "showSaveFilePicker"))
+        alert("window.showSaveFilePicker not supported!");
+      this.fileShowOption = {
+        "suggestedName": "example." + fileExtension,
+        "types": [
+          {
+            "description": description,
+            "accept": { "application/octet-stream": ["." + fileExtension] }
+          }
+        ],
+        "excludeAcceptAllOption": false,
+        "multiple": false,
+        "startIn": "documents"
+      };
+    }
+    // --------------------------------------------------------------------------------------------
+    reset() {
+      this.fileHandle = void 0;
+      this.fileContent = void 0;
+    }
+    // --------------------------------------------------------------------------------------------
+    async showSaveFilePicker() {
+      const fileHandle = await window.showSaveFilePicker(this.fileShowOption);
+      return fileHandle.name.endsWith(this.fileExtension) ? fileHandle : void 0;
+    }
+    // --------------------------------------------------------------------------------------------
+    async showOpenFilePicker() {
+      const fileHandle = (await window.showOpenFilePicker(this.fileShowOption))[0];
+      return fileHandle.name.endsWith(this.fileExtension) ? fileHandle : void 0;
+    }
+    // --------------------------------------------------------------------------------------------
+    async open(withWritePermission = false) {
+      const pickedHandle = await this.showOpenFilePicker();
+      if (!pickedHandle) {
+        return false;
+      }
+      if (withWritePermission) {
+        const canWrite = await this.ensurePermission(pickedHandle, "readwrite");
+        if (!canWrite) {
+          alert("Write permission denied for this file.");
+          this.reset();
+          return false;
+        }
+      }
+      this.fileHandle = pickedHandle;
+      const file = await this.fileHandle.getFile();
+      this.fileContent = await file.text();
+      return true;
+    }
+    // --------------------------------------------------------------------------------------------
+    async saveAs() {
+      if (!this.fileContent)
+        return false;
+      this.fileHandle = await this.showSaveFilePicker();
+      if (!this.fileHandle) {
+        return false;
+      }
+      const writer = await this.fileHandle.createWritable();
+      await writer.truncate(0);
+      await writer.write(this.fileContent);
+      await writer.close();
+      return true;
+    }
+    // --------------------------------------------------------------------------------------------
+    async save() {
+      if (!this.fileContent)
+        return false;
+      if (!this.fileHandle)
+        return await this.saveAs();
+      else {
+        const writer = await this.fileHandle.createWritable();
+        await writer.write(this.fileContent);
+        await writer.close();
+        return true;
+      }
+    }
+  };
+
+  // lib.reco/src/reco-ui.js
+  var RecoPageData = class _RecoPageData extends RecoGenericClass {
+    static metaClass;
+    constructor(app, id, metaClass = _RecoPageData.metaClass) {
+      super(app, id, metaClass);
+    }
+  };
+  new RecoMetaClass(RecoPageData, RECO_FAT_DB_NAME, false);
+  var RecoUI = class {
+    app;
+    currentPage;
+    get appData() {
+      return new RecoPageData(this.app, "all");
+    }
+    localStorage = void 0;
+    diskTextFile = void 0;
+    constructor(app) {
+      this.app = app;
+      this.app.metaClassListDict.setValue("RecoPageData", RecoPageData.metaClass);
+      this.app.metaClassListDict.setValue("RecoLocalStorageFile", RecoLocalStorageFile.metaClass);
+      this.localStorage = new RecoLocalStorage(this.app);
+      this.app.addListener(this);
+    }
+    async getPage(page) {
+      let pageHtmlSrc = document.getElementById("RecoPages." + page) ? document.getElementById("RecoPages." + page)?.innerHTML : void 0;
+      if (!pageHtmlSrc) {
+        const parser = new DOMParser();
+        const response = await fetch(`./${page}.html`);
+        const html = await response.text();
+        const doc = parser.parseFromString(html, "text/html");
+        pageHtmlSrc = doc.getElementById("reco-root").innerHTML;
+        const pageElement = document.createElement("div");
+        pageElement.id = "RecoPages." + page;
+        pageElement.innerHTML = pageHtmlSrc;
+        document.getElementById("reco-templates")?.appendChild(pageElement);
+      }
+      return pageHtmlSrc;
+    }
+    notifyChange(action, key, oldVal, newVal) {
+      if (this.currentPage)
+        this.currentPage.notifyChange(action, key, oldVal, newVal);
+    }
+    load(fileName, reset, dbName = RECO_DEFAULT_DB_NAME) {
+      this.appData.setField("fileName", fileName);
+      if (!fileName)
+        return;
+      const content = this.localStorage?.loadFile(fileName);
+      if (!content)
+        return;
+      if (reset)
+        this.app.getDb(dbName).clearData();
+      this.app.fromJson(JSON.parse(content), dbName);
+    }
+    save(fileName = void 0, dbName = RECO_DEFAULT_DB_NAME) {
+      if (!fileName)
+        fileName = this.appData.getField("fileName");
+      else
+        this.appData.setField("fileName", fileName);
+      if (!fileName)
+        return;
+      const content = JSON.stringify(this.app.toJson(dbName, true), null, 4);
+      this.localStorage?.saveFile(fileName, content);
+    }
+    async importFromDiskFile(reset, dbName = RECO_DEFAULT_DB_NAME) {
+      const diskTextFile = new RecoBrowserJsonFile("Choose a file to import", this.app.name + ".json");
+      if (await diskTextFile.open(false)) {
+        this.diskTextFile = diskTextFile;
+        const json = JSON.parse(diskTextFile.fileContent);
+        if (reset)
+          this.app.getDb(dbName).clearData();
+        this.app.fromJson(json, dbName);
+        return true;
+      }
+      return false;
+    }
+    async exportToDiskFile(dbName = RECO_DEFAULT_DB_NAME) {
+      if (!this.diskTextFile)
+        this.diskTextFile = new RecoBrowserJsonFile("Choose a file to export", this.app.name + ".json");
+      const json = this.app.toJson(dbName, true);
+      this.diskTextFile.fileContent = JSON.stringify(json, null, 4);
+      return await this.diskTextFile.save();
+    }
+    async exportToDiskAsFile(dbName = RECO_DEFAULT_DB_NAME) {
+      if (!this.diskTextFile)
+        this.diskTextFile = new RecoBrowserJsonFile("Choose a file to export", this.app.name + ".json");
+      const json = this.app.toJson(dbName, true);
+      this.diskTextFile.fileContent = JSON.stringify(json, null, 4);
+      return await this.diskTextFile.saveAs();
+    }
+  };
+  var RecoPage = class {
+    ui;
+    get id() {
+      return this.constructor.name;
+    }
+    dynElts = {};
+    get pageData() {
+      return this.ui.app.getObject(RecoPageData.metaClass, this.id);
+    }
+    constructor(ui) {
+      this.ui = ui;
+      this.pageData.delete();
+    }
+    async display() {
+      this.dynElts = {};
+      const content = await this.ui.getPage(this.id);
+      if (!content)
+        throw new Error(`Page with id "${this.id}" not found.`);
+      document.getElementById("reco-root").innerHTML = content;
+      this.ui.currentPage = this;
+      this.generateTemplates();
+      this.scanForDynElts();
+      this.refreshDynElts();
+    }
+    generateTemplates() {
+      const templates = {};
+      for (const elt of document.getElementById("reco-root").querySelectorAll("[tpl]")) {
+        const element = elt;
+        const tpl = element.getAttribute("tpl");
+        let template = templates[tpl];
+        if (!template)
+          template = templates[tpl] = { elements: [] };
+        if (element.classList.contains("reco-tpl")) {
+          const iterator = element.getAttribute("@iterator");
+          if (!iterator)
+            throw new Error(`Iterator not found for template "${tpl}"`);
+          if (iterator[0] !== "@")
+            throw new Error(`Iterator for template "${tpl}" must start with '@'`);
+          template.iterator = iterator.substring(1);
+          template.root = element;
+        } else {
+          element.removeAttribute("tpl");
+          element.removeAttribute("n");
+          template.elements.push(element);
+        }
+      }
+      for (const template of Object.values(templates)) {
+        const list = Reco.evalDotExp(this, template.iterator);
+        for (const iterated of list) {
+          for (const element of template.elements) {
+            const copy = element.cloneNode(true);
+            const copyElts = [copy];
+            copyElts.push(...Array.from(copy.querySelectorAll("[reco]")));
+            for (let copyElt of copyElts) {
+              const keynames = copyElt.getAttribute("reco");
+              if (!keynames)
+                continue;
+              for (const keyname of keynames.split(",")) {
+                const key = copyElt.getAttribute(keyname);
+                copyElt.setAttribute(keyname, key.replace("@iterated", iterated));
+              }
+            }
+            template.root.parentElement.appendChild(copy);
+          }
+        }
+      }
+      for (const template of Object.values(templates)) {
+        for (const element of template.elements) {
+          element.remove();
+        }
+      }
+    }
+    scanForDynElts() {
+      document.getElementById("reco-root").querySelectorAll("[reco]").forEach((el) => {
+        const keynames = el.getAttribute("reco");
+        for (const keyname of keynames?.split(",")) {
+          const keyInit = el.getAttribute(keyname);
+          if (!keyInit || !keyInit.startsWith("/"))
+            continue;
+          if (!keyInit)
+            continue;
+          let [, metaClassname, id, fieldname] = keyInit.split("/");
+          if (id.startsWith("@"))
+            id = this[id.substring(1)];
+          const key = `/${metaClassname}/${id}/${fieldname}`;
+          el.setAttribute(keyname, key);
+          if (!this.dynElts[key])
+            this.dynElts[key] = {};
+          if (!this.dynElts[key][keyname])
+            this.dynElts[key][keyname] = [];
+          this.dynElts[key][keyname].push(el);
+          if (el.tagName === "SELECT") {
+            const [, metaClassname2, id2, fieldname2] = el.getAttribute("@itemIds").split("/");
+            const metaclass = this.ui.app.metaClassListDict.getValueFor(metaClassname2);
+            if (!metaclass)
+              throw new Error(`MetaClass not found for ${metaClassname2}`);
+            const itemIds = this.ui.app.existingObject(metaclass, id2).getField(fieldname2);
+            const [, valuesMetaclassname, , valuesFieldname] = el.getAttribute("@valueIds").split("/");
+            const [, labelsMetaclassname, , labelsFieldname] = el.getAttribute("@labels").split("/");
+            const valuesMetaclass = this.ui.app.metaClassListDict.getValueFor(valuesMetaclassname);
+            if (!valuesMetaclass)
+              throw new Error(`MetaClass not found for ${valuesMetaclassname}`);
+            const labelsMetaclass = this.ui.app.metaClassListDict.getValueFor(labelsMetaclassname);
+            if (!labelsMetaclass)
+              throw new Error(`MetaClass not found for ${labelsMetaclassname}`);
+            el.innerHTML = '<option value=""></option>';
+            for (const itemId of itemIds) {
+              const option = document.createElement("option");
+              const obj = this.ui.app.existingObject(valuesMetaclass, itemId);
+              option.value = obj[valuesFieldname];
+              option.textContent = obj[labelsFieldname];
+              el.appendChild(option);
+            }
+          }
+        }
+      });
+    }
+    refreshDynElts() {
+      const keysObjects = {};
+      for (const key in this.dynElts) {
+        for (const keyname in this.dynElts[key]) {
+          this.refreshUIDynForKey(key, keysObjects);
+          for (const elt of this.dynElts[key][keyname]) {
+            if (keyname == "@value") {
+              if (elt.tagName === "INPUT" || elt.tagName === "TEXTAREA") {
+                elt.onchange = (event) => {
+                  this.onUIChangeDynForElt(elt, key, keyname);
+                };
+              } else if (elt.tagName === "SELECT") {
+                elt.onchange = (event) => {
+                  this.onUIChangeDynForElt(elt, key, keyname);
+                };
+              }
+            }
+          }
+        }
+      }
+      document.getElementById("reco-root").querySelectorAll("button[reco]").forEach((el) => {
+        const elt = el;
+        elt.onclick = (event) => {
+          this.action(elt);
+        };
+      });
+    }
+    action(elt) {
+      alert(`Action @name="${elt.getAttribute("@name")}", @info="${elt.getAttribute("@info")}"`);
+    }
+    onUIChangeDynForElt(elt, key, keyname) {
+      const [, metaClassname, id, fieldname] = key.split("/");
+      const metaclass = this.ui.app.metaClassListDict.getValueFor(metaClassname);
+      if (!metaclass)
+        throw new Error(`MetaClass not found for ${metaClassname}`);
+      let obj = this.ui.app.getObject(metaclass, id);
+      let oldValue = void 0;
+      if (obj instanceof RecoPageData) {
+        oldValue = obj.getField(fieldname);
+      } else
+        oldValue = obj[fieldname];
+      let newValue = void 0;
+      if (["INPUT", "TEXTAREA"].includes(elt.tagName)) {
+        if (elt.getAttribute("type") === "date" && oldValue) {
+          newValue = elt.valueAsDate ? elt.valueAsDate : void 0;
+        } else if (elt.getAttribute("type") === "boolean") {
+          newValue = elt.checked;
+        } else if (elt.getAttribute("type") === "number") {
+          newValue = elt.valueAsNumber;
+        } else {
+          newValue = elt.value;
+          newValue = newValue.length == 0 ? void 0 : newValue;
+        }
+      } else if (elt.tagName === "SELECT") {
+        newValue = elt.value;
+        newValue = newValue.length == 0 ? void 0 : newValue;
+      }
+      if (oldValue !== newValue) {
+        if (obj instanceof RecoPageData) {
+          obj.setField(fieldname, newValue);
+        } else
+          obj[fieldname] = newValue;
+      }
+    }
+    refreshUIDynForKey(key, keysObjects = {}) {
+      const keynameEltsMap = this.dynElts[key];
+      if (!keynameEltsMap)
+        return;
+      const [, metaClassname, id, fieldname] = key.split("/");
+      const keyPrefix = `/${metaClassname}/${id}/`;
+      let obj = keysObjects[keyPrefix];
+      if (!obj) {
+        const metaclass = this.ui.app.metaClassListDict.getValueFor(metaClassname);
+        if (!metaclass)
+          throw new Error(`MetaClass not found for ${metaClassname}`);
+        obj = this.ui.app.existingObject(metaclass, id);
+        if (obj)
+          keysObjects[keyPrefix] = obj;
+      }
+      let value;
+      if (obj instanceof RecoPageData) {
+        value = obj.getField(fieldname);
+      } else {
+        value = obj ? obj[fieldname] : void 0;
+      }
+      for (const keyname in keynameEltsMap) {
+        for (const elt of keynameEltsMap[keyname]) {
+          if (keyname == "@value" && ["INPUT", "TEXTAREA"].indexOf(elt.tagName) !== -1) {
+            if (elt.getAttribute("type") === "date" && value) {
+              elt.valueAsDate = value;
+            } else if (elt.getAttribute("type") === "boolean") {
+              elt.checked = value;
+            } else if (elt.getAttribute("type") === "number") {
+              elt.valueAsNumber = value ?? 0;
+            } else {
+              elt.value = value ?? "";
+            }
+          } else if (keyname == "@value" && "SELECT" == elt.tagName) {
+            elt.value = value ?? "";
+          } else if (keyname == "@innertext") {
+            if (value instanceof Date) {
+              elt.innerText = Reco.Date2YYYYMMDD(value);
+            } else {
+              elt.innerText = "" + (value ?? "");
+            }
+          } else if (keyname == "@info") {
+            if (value instanceof Date) {
+              elt.setAttribute("@info", Reco.Date2YYYYMMDD(value));
+            } else {
+              elt.setAttribute("@info", "" + (value ?? ""));
+            }
+          } else if (keyname == "@id" && value) {
+            elt.id = "" + value;
+          } else if (keyname == "@class") {
+            const oldClasses = elt.getAttribute("recoclass");
+            if (oldClasses) {
+              for (const oldClass of oldClasses.split(" ")) {
+                if (elt.classList.contains(oldClass))
+                  elt.classList.remove(oldClass);
+              }
+            }
+            if (value) {
+              const newClasses = ("" + value).split(" ");
+              for (const newClass of newClasses) {
+                if (!elt.classList.contains(newClass))
+                  elt.classList.add(newClass);
+              }
+              elt.setAttribute("recoclass", newClasses.join(" "));
+            }
+          }
+        }
+      }
+    }
+    notifyChange(action, key, oldVal, newVal) {
+      this.refreshUIDynForKey(key);
+    }
+  };
+
+  // app.conges/src/conges-app.js
+  var CongesApp = class extends RecoApp {
+    constructor() {
+      super("CongesApp");
+      const metaClassConges = new RecoMetaClass(Conges);
+      const metaClassTypeConges = new RecoMetaClass(TypeConges);
+      const metaClassMois = new RecoMetaClass(Mois);
+      const metaClassJourSem = new RecoMetaClass(JourSem);
+      const metaClassJour = new RecoMetaClass(Jour);
+      new RecoMetaField(metaClassConges, "annee", RecoTypeNames.string);
+      new RecoMetaField(metaClassTypeConges, "label", RecoTypeNames.string);
+      new RecoMetaField(metaClassTypeConges, "quota", RecoTypeNames.number);
+      new RecoMetaField(metaClassTypeConges, "sansQuota", RecoTypeNames.boolean);
+      new RecoMetaField(metaClassTypeConges, "conso", RecoTypeNames.number, false);
+      new RecoMetaField(metaClassTypeConges, "cssClassBt", RecoTypeNames.string, false);
+      new RecoMetaField(metaClassMois, "labelCourt", RecoTypeNames.string);
+      new RecoMetaField(metaClassMois, "labelLong", RecoTypeNames.string);
+      new RecoMetaField(metaClassJourSem, "labelCourt", RecoTypeNames.string);
+      new RecoMetaField(metaClassJourSem, "labelLong", RecoTypeNames.string);
+      new RecoMetaField(metaClassJour, "amTypeCongesId", RecoTypeNames.Ref).setTargetMetaClass(metaClassTypeConges);
+      new RecoMetaField(metaClassJour, "pmTypeCongesId", RecoTypeNames.Ref).setTargetMetaClass(metaClassTypeConges);
+      new RecoMetaField(metaClassJour, "dateJour", RecoTypeNames.Date);
+      new RecoMetaField(metaClassJour, "clsJour", RecoTypeNames.string, false);
+      new RecoMetaField(metaClassJour, "clsJourAM", RecoTypeNames.string, false);
+      new RecoMetaField(metaClassJour, "clsJourPM", RecoTypeNames.string, false);
+      this.metaClassListDict.setValue("Conges", Conges.metaClass);
+      this.metaClassListDict.setValue("TypeConges", TypeConges.metaClass);
+      this.metaClassListDict.setValue("Mois", Mois.metaClass);
+      this.metaClassListDict.setValue("JourSem", JourSem.metaClass);
+      this.metaClassListDict.setValue("Jour", Jour.metaClass);
+    }
+    get conges() {
+      return this.existingObject(Conges.metaClass, "singleton");
+    }
+    majChampsMemoire() {
+      for (const typeConges of this.conges.typeCongesListe)
+        typeConges.majChampsMemoire();
+      for (const jour of this.conges.jourListe)
+        jour.majChampsMemoire();
+    }
+  };
+  var CongesGenericClass = class extends RecoGenericClass {
+    constructor(app, id, metaClass) {
+      super(app, id, metaClass);
+    }
+    get congesApp() {
+      return this.$app;
+    }
+    get moisListeIds() {
+      return this.$app.getAllObjectIds(Mois.metaClass).sort();
+    }
+    get moisListe() {
+      return this.$app.getObjects(Mois.metaClass, this.moisListeIds);
+    }
+    get jourSemListe() {
+      return this.$app.getAllObjects(JourSem.metaClass);
+    }
+    get jourListeIds() {
+      return this.$app.getAllObjectIds(Jour.metaClass).sort();
+    }
+    get jourListe() {
+      return this.$app.getObjects(Jour.metaClass, this.jourListeIds);
+    }
+    get typeCongesListe() {
+      return this.$app.getAllObjects(TypeConges.metaClass);
+    }
+    get typeCongesListeIds() {
+      return this.$app.getAllObjectIds(TypeConges.metaClass);
+    }
+  };
+  var Conges = class _Conges extends CongesGenericClass {
+    static metaClass;
+    constructor(app, id = void 0, metaClass = _Conges.metaClass) {
+      super(app, id, metaClass);
+    }
+    get id() {
+      return this.$id;
+    }
+    get annee() {
+      return this.getField("annee");
+    }
+    set annee(value) {
+      this.setField("annee", value);
+    }
+  };
+  var TypeConges = class _TypeConges extends CongesGenericClass {
+    static metaClass;
+    constructor(app, id = void 0, metaClass = _TypeConges.metaClass) {
+      super(app, id, metaClass);
+    }
+    get id() {
+      return this.$id;
+    }
+    get annee() {
+      return this.getField("annee");
+    }
+    set annee(value) {
+      this.setField("annee", value);
+    }
+    get quota() {
+      return this.getField("quota");
+    }
+    set quota(value) {
+      this.setField("quota", value);
+    }
+    get sansQuota() {
+      return this.getField("sansQuota");
+    }
+    set sansQuota(value) {
+      this.setField("sansQuota", value);
+    }
+    get conso() {
+      return this.getField("conso");
+    }
+    set conso(value) {
+      this.setField("conso", value);
+    }
+    get cssClassBt() {
+      let val = this.getField("cssClassBt");
+      if (!val) {
+        val = this.id;
+        this.cssClassBt = val;
+      }
+      return val;
+    }
+    set cssClassBt(value) {
+      this.setField("cssClassBt", value);
+    }
+    get cssClassQuota() {
+      return this.sansQuota ? "sans-quota" : "avec-quota";
+    }
+    majChampsMemoire() {
+      let conso = 0;
+      let jourListe = this.$app.getAllObjects(Jour.metaClass);
+      for (let jour of jourListe) {
+        if (jour.amTypeCongesId === this.id)
+          conso += 0.5;
+        if (jour.pmTypeCongesId === this.id)
+          conso += 0.5;
+      }
+      this.conso = conso;
+    }
+  };
+  var Mois = class _Mois extends CongesGenericClass {
+    static metaClass;
+    constructor(app, id = void 0, metaClass = _Mois.metaClass) {
+      super(app, id, metaClass);
+    }
+    get id() {
+      return this.$id;
+    }
+    get labelCourt() {
+      return this.getField("labelCourt");
+    }
+    set labelCourt(value) {
+      this.setField("labelCourt", value);
+    }
+    get labelLong() {
+      return this.getField("labelLong");
+    }
+    set labelLong(value) {
+      this.setField("labelLong", value);
+    }
+  };
+  var JourSem = class _JourSem extends CongesGenericClass {
+    static metaClass;
+    constructor(app, id = void 0, metaClass = _JourSem.metaClass) {
+      super(app, id, metaClass);
+    }
+    get id() {
+      return this.$id;
+    }
+    get labelCourt() {
+      return this.getField("labelCourt");
+    }
+    set labelCourt(value) {
+      this.setField("labelCourt", value);
+    }
+    get labelLong() {
+      return this.getField("labelLong");
+    }
+    set labelLong(value) {
+      this.setField("labelLong", value);
+    }
+    get existe() {
+      return this.getField("existe");
+    }
+    set existe(value) {
+      this.setField("existe", value);
+    }
+  };
+  var Jour = class _Jour extends CongesGenericClass {
+    static metaClass;
+    constructor(app, id = void 0, metaClass = _Jour.metaClass) {
+      super(app, id, metaClass);
+    }
+    get id() {
+      return this.$id;
+    }
+    get amTypeCongesId() {
+      return this.getField("amTypeCongesId");
+    }
+    set amTypeCongesId(value) {
+      this.setField("amTypeCongesId", value);
+    }
+    get pmTypeCongesId() {
+      return this.getField("pmTypeCongesId");
+    }
+    set pmTypeCongesId(value) {
+      this.setField("pmTypeCongesId", value);
+    }
+    get amTypeConges() {
+      return this.$app.existingObject(TypeConges.metaClass, this.amTypeCongesId);
+    }
+    set amTypeConges(value) {
+      this.amTypeCongesId = value ? value.$id : void 0;
+    }
+    get pmTypeConges() {
+      return this.$app.existingObject(TypeConges.metaClass, this.pmTypeCongesId);
+    }
+    set pmTypeConges(value) {
+      this.pmTypeCongesId = value ? value.$id : void 0;
+    }
+    get dateJour() {
+      return this.getField("dateJour");
+    }
+    set dateJour(value) {
+      this.setField("dateJour", value);
+    }
+    get dateJourYYYYMMDD() {
+      return Reco.Date2YYYYMMDD(this.dateJour);
+    }
+    set dateJourYYYYMMDD(value) {
+      this.dateJour = Reco.YYYYMMDD2Date(value);
+    }
+    get existe() {
+      return this.getField("existe");
+    }
+    set existe(value) {
+      this.setField("existe", value);
+    }
+    get clsJour() {
+      return this.getField("clsJour");
+    }
+    set clsJour(value) {
+      this.setField("clsJour", value);
+    }
+    get clsJourAM() {
+      return this.getField("clsJourAM");
+    }
+    set clsJourAM(value) {
+      this.setField("clsJourAM", value);
+    }
+    get clsJourPM() {
+      return this.getField("clsJourPM");
+    }
+    set clsJourPM(value) {
+      this.setField("clsJourPM", value);
+    }
+    get mois() {
+      const [, moisId] = this.dateJourYYYYMMDD.split("-");
+      return this.$app.existingObject(Mois.metaClass, moisId);
+    }
+    get jourMois() {
+      const [, , jourMoisId] = this.dateJourYYYYMMDD.split("-");
+      return jourMoisId;
+    }
+    get jourSem() {
+      const jourSemId = ("" + (100 + this.dateJour.getDay() + 1)).substring(1);
+      return this.$app.existingObject(JourSem.metaClass, jourSemId);
+    }
+    get jourSemLabelCourt() {
+      const jourSem = this.jourSem;
+      return jourSem ? jourSem.labelCourt : "";
+    }
+    get weekend() {
+      const day = this.dateJour.getDay();
+      return day === 0 || day === 6;
+    }
+    majChampsMemoire() {
+      if (!this.$app.listening)
+        return;
+      let clsJour = "";
+      let clsJourAM = "";
+      let clsJourPM = "";
+      if (!this.existe) {
+        clsJour = "jourInexistant ";
+        clsJourAM = "jourInexistant ";
+        clsJourPM = "jourInexistant ";
+      } else {
+        if (this.weekend) {
+          clsJour = "weekend ";
+          clsJourAM = "weekend ";
+          clsJourPM = "weekend ";
+        }
+        if (this.amTypeCongesId) {
+          clsJourAM = this.amTypeCongesId + " ";
+        }
+        if (this.pmTypeCongesId) {
+          clsJourPM = this.pmTypeCongesId + " ";
+        }
+      }
+      this.clsJour = clsJour.trim();
+      this.clsJourAM = clsJourAM.trim();
+      this.clsJourPM = clsJourPM.trim();
+    }
+  };
+
+  // app.conges/src/conges-initdata.js
+  var MOIS_LABEL_COURTS = ["Janv", "Fev", "Mars", "Avril", "Mai", "Juin", "Juil", "Ao\xFBt", "Sept", "Oct", "Nov", "Dec"];
+  var MOIS_LABEL_LONGS = ["Janvier", "F\xE9vrier", "Mars", "Avril", "Mai", "Juin", "Juillet", "Ao\xFBt", "Septembre", "Octobre", "Novembre", "D\xE9cembre"];
+  var JOURSEM_LABEL_COURTS = ["Di", "Lu", "Ma", "Me", "Je", "Ve", "Sa"];
+  var JOURSEM_LABEL_LONGS = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
+  function congesInitData(app, annee = (/* @__PURE__ */ new Date()).getFullYear()) {
+    app.getDb(RECO_DEFAULT_DB_NAME).clearData();
+    const conges = new Conges(app, "singleton").setField("annee", annee);
+    new TypeConges(app, "FE").setFields({ label: "F\xE9ri\xE9", quota: 0, sansQuota: true });
+    new TypeConges(app, "CP").setFields({ label: "Cong\xE9s Pay\xE9s", quota: 25, sansQuota: false });
+    new TypeConges(app, "RTT").setFields({ label: "RTT", quota: 9, sansQuota: false });
+    new TypeConges(app, "ANC").setFields({ label: "Anciennet\xE9", quota: 4, sansQuota: false });
+    new TypeConges(app, "FLEX").setFields({ label: "Flexible", quota: 1, sansQuota: false });
+    for (let m = 1; m <= 12; m++) {
+      const moisId = ("" + (100 + m)).substring(1);
+      new Mois(app, moisId).setFields({ labelCourt: MOIS_LABEL_COURTS[m - 1], labelLong: MOIS_LABEL_LONGS[m - 1] });
+    }
+    for (let j = 1; j <= 7; j++) {
+      const jourSemId = ("" + (100 + j)).substring(1);
+      new JourSem(app, jourSemId).setFields({ labelCourt: JOURSEM_LABEL_COURTS[j - 1], labelLong: JOURSEM_LABEL_LONGS[j - 1] });
+    }
+    for (let m = 1; m <= 12; m++) {
+      for (let j = 1; j <= 31; j++) {
+        const jourId = ("" + (100 + j)).substring(1);
+        const moisId = ("" + (100 + m)).substring(1);
+        const anneeId = ("" + (1e4 + annee)).substring(1);
+        const id = `${jourId}-${moisId}-${anneeId}`;
+        const dateJourYYYYMMDD = `${annee}-${moisId}-${jourId}`;
+        const dateJour = Reco.YYYYMMDD2Date(dateJourYYYYMMDD);
+        const jour = new Jour(app, id).setFields({ "dateJour": dateJour });
+        jour.existe = dateJourYYYYMMDD === jour.dateJourYYYYMMDD;
+      }
+    }
+    const FERIERS = ["01-01", "01-05", "08-05", "14-07", "15-08", "01-11", "11-11", "25-12"];
+    for (let ferier of FERIERS) {
+      ferier += "-" + annee;
+      const jour = app.existingObject(Jour.metaClass, ferier);
+      if (jour) {
+        jour.amTypeCongesId = "FE";
+        jour.pmTypeCongesId = "FE";
+      }
+    }
+  }
+
+  // app.conges/src/conges-ui.ts
+  var CongesUI = class extends RecoUI {
+    constructor() {
+      super(new CongesApp());
+      this.init();
+    }
+    async init() {
+      new CongesHomePage(this).display();
+    }
+    get congesApp() {
+      return this.app;
+    }
+    get typeCongesCourantId() {
+      return this.appData.getField("typeCongesCourantId");
+    }
+    set typeCongesCourantId(value) {
+      this.appData.setField("typeCongesCourantId", value);
+    }
+    get typeCongesCourant() {
+      return this.typeCongesCourantId ? this.app.existingObject(TypeConges.metaClass, this.typeCongesCourantId) : void 0;
+    }
+  };
+  var CongesHomePage = class extends RecoPage {
+    get nouvelleAnnee() {
+      return this.pageData.getField("nouvelleAnnee");
+    }
+    constructor(ui) {
+      super(ui);
+      this.pageData.setField("nouvelleAnnee", (/* @__PURE__ */ new Date()).getFullYear());
+      this.ui.app.getDb(RECO_DEFAULT_DB_NAME).clearData();
+    }
+    async action(elt) {
+      const actionName = elt.getAttribute("@name");
+      if (actionName === "creerFichier" && this.nouvelleAnnee > 1900 && this.nouvelleAnnee < 2100) {
+        this.ui.app.getDb(RECO_DEFAULT_DB_NAME).clearData();
+        congesInitData(this.ui.app, this.nouvelleAnnee);
+        this.ui.app.conges.annee = "" + this.nouvelleAnnee;
+        this.ui.app.majChampsMemoire();
+        new CongesCalendrierPage(this.ui).display();
+      } else if (actionName === "ouvrirFichier") {
+        if (await this.ui.importFromDiskFile(true)) {
+          this.ui.app.majChampsMemoire();
+          new CongesCalendrierPage(this.ui).display();
+        }
+      }
+    }
+  };
+  var CongesCalendrierPage = class extends RecoPage {
+    get typeCongesListeIds() {
+      return this.ui.app.conges.typeCongesListeIds;
+    }
+    get moisListeIds() {
+      return this.ui.app.conges.moisListeIds;
+    }
+    get jourListeIds() {
+      return this.ui.app.conges.jourListeIds;
+    }
+    constructor(ui) {
+      super(ui);
+      this.pageData.setField("annee", this.ui.app.conges.annee);
+      this.pageData.setField("nomFichier", this.ui.diskTextFile ? this.ui.diskTextFile.fileName : "????");
+    }
+    async display() {
+      await super.display();
+      document.getElementById("calendrier").onclick = (event) => {
+        this.action(event.target);
+      };
+    }
+    async action(elt) {
+      const actionName = elt.getAttribute("@name");
+      const actionInfo = elt.getAttribute("@info");
+      if (actionName === "btTypeConges" && actionInfo) {
+        if (this.ui.typeCongesCourantId == actionInfo) {
+          this.ui.typeCongesCourant.cssClassBt = this.ui.typeCongesCourantId;
+          this.ui.typeCongesCourantId = void 0;
+        } else {
+          if (this.ui.typeCongesCourantId)
+            this.ui.typeCongesCourant.cssClassBt = this.ui.typeCongesCourantId;
+          this.ui.typeCongesCourantId = actionInfo;
+          this.ui.typeCongesCourant.cssClassBt = this.ui.typeCongesCourantId + " courant";
+        }
+      } else if (["jourSem", "jourMois"].includes(actionName)) {
+        if (!this.ui.typeCongesCourantId) return;
+        const jour = this.ui.app.existingObject(Jour.metaClass, actionInfo);
+        if (!jour) return;
+        if (jour.weekend) return;
+        if (jour.amTypeCongesId == "FE" && this.ui.typeCongesCourantId != "FE") return;
+        if (jour.pmTypeCongesId == "FE" && this.ui.typeCongesCourantId != "FE") return;
+        if (jour.amTypeCongesId == this.ui.typeCongesCourantId || jour.pmTypeCongesId == this.ui.typeCongesCourantId) {
+          jour.amTypeCongesId = void 0;
+          jour.pmTypeCongesId = void 0;
+        } else {
+          jour.amTypeCongesId = this.ui.typeCongesCourantId;
+          jour.pmTypeCongesId = this.ui.typeCongesCourantId;
+        }
+        this.ui.app.majChampsMemoire();
+      } else if ("jourAM" == actionName) {
+        if (!this.ui.typeCongesCourantId) return;
+        const jour = this.ui.app.existingObject(Jour.metaClass, actionInfo);
+        if (!jour) return;
+        if (jour.weekend) return;
+        if (jour.amTypeCongesId == "FE" && this.ui.typeCongesCourantId != "FE") return;
+        jour.amTypeCongesId = jour.amTypeCongesId == this.ui.typeCongesCourantId ? void 0 : this.ui.typeCongesCourantId;
+        this.ui.app.majChampsMemoire();
+      } else if ("jourPM" == actionName) {
+        if (!this.ui.typeCongesCourantId) return;
+        const jour = this.ui.app.existingObject(Jour.metaClass, actionInfo);
+        if (!jour) return;
+        if (jour.weekend) return;
+        if (jour.pmTypeCongesId == "FE" && this.ui.typeCongesCourantId != "FE") return;
+        jour.pmTypeCongesId = jour.pmTypeCongesId == this.ui.typeCongesCourantId ? void 0 : this.ui.typeCongesCourantId;
+        this.ui.app.majChampsMemoire();
+      } else if (actionName === "close") {
+        new CongesHomePage(this.ui).display();
+      } else if (actionName === "enregistrerFichier") {
+        await this.ui.exportToDiskFile();
+      } else if (actionName === "enregistrerFichierSous") {
+        await this.ui.exportToDiskAsFile();
+        this.pageData.setField("nomFichier", this.ui.diskTextFile ? this.ui.diskTextFile.fileName : "????");
+      }
+    }
+  };
+  window.onload = () => {
+    if (window.location.pathname.endsWith("/") || window.location.pathname.endsWith("/index.html") || window.location.pathname.endsWith("/app.conges.html")) {
+      new CongesUI();
+    }
+  };
+})();
+</script>
+</body>
+</html>
