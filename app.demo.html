@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <title>Demo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>body {
+    <style>
+body {
     display: grid;
     grid-template-columns: auto max-content auto;
 }
@@ -56,8 +57,10 @@ select {
 
 #reco-templates {
     display: none;
-}</style>
-    <style>body {
+}
+    </style>
+    <style>
+body {
     background-color: darkgray;
     font-family: Arial, sans-serif;
 }
@@ -109,16 +112,16 @@ select {
     background-color: white !important;
 }
 
-.reco-value>input {
-    background-color: lightyellow !important;
-}
-.reco-value>select {
-    background-color: lightyellow !important;
-}
-
 .reco-danger {
     background-color: red;
     color: white;
+}
+
+.reco-value>input, input.reco-value {
+    background-color: lightyellow !important;
+}
+.reco-value>select, select.reco-value {
+    background-color: lightyellow !important;
 }
 
 button {
@@ -138,8 +141,10 @@ button:active {
 .reco-close {
     color:white;
     background-color: red;
-}</style>
-    <style>body * {
+}
+    </style>
+    <style>
+body * {
     font-size: 1em;
 }
 
@@ -200,6 +205,11 @@ button:active {
     padding: 0.25em;
 }
 
+.reco-table> div.reco-cell > input {
+    margin: 0;
+}
+
+
 .reco-bloc {
     padding-left: 0.5em !important;
 }
@@ -226,7 +236,8 @@ button:active {
 
 button {
     cursor: pointer;
-}</style>
+}
+    </style>
 
 </head>
 <body>
@@ -236,18 +247,18 @@ button {
     <div></div>
     <div id="reco-templates">
         <div id="RecoPages.DemoAddressPage">
-        <button @name="close" reco="" class="reco-close">X</button>
+        <button reco="" @name="close" class="reco-close">X</button>
         <div class="reco-title1">Address</div>
         <div class="reco-form">
             <div class="reco-label">Lines</div>
-            <div class="reco-value"><input reco="value" @value="/DemoAddress/@addressId/lines" type="text" value="10 Downing Street"></div>
+            <div class="reco-value"><input reco="" @value="/DemoAddress/{{/RecoPageData/DemoAddressPage/addressId}}/lines" type="text" value="10 Downing Street"></div>
             <div></div>
             <div class="reco-label">City</div>
-            <div class="reco-value"><input reco="value" @value="/DemoAddress/@addressId/city" type="text" value="London"></div>
+            <div class="reco-value"><input reco="" @value="/DemoAddress/{{/RecoPageData/DemoAddressPage/addressId}}/city" type="text" value="London"></div>
             <div></div>
             <div class="reco-label">Country</div>
             <div class="reco-value">
-                <select reco="value" @value="/DemoAddress/@addressId/countryId" @itemIds="/RecoPageData/DemoAddressPage/countryIds" @valueIds="/DemoCountry/@itemId/id" @labels="/DemoCountry/@itemId/descr">
+                <select reco="" @value="/DemoAddress/{{/RecoPageData/DemoAddressPage/addressId}}/countryId" @tplOptionCollection="/RecoPageData/DemoUI/countryIds" @tplOptionValues="/DemoCountry/{{optionIterated}}/id" @tplOptionLabels="/DemoCountry/{{optionIterated}}/name">
                     <option value="FR">France</option>
                     <option value="USA" selected>United States of America</option>
                     <option value="GB">United Kingdom</option>
@@ -257,7 +268,7 @@ button {
         </div>
      </div>
         <div id="RecoPages.DemoCountryListPage">
-        <button @name="close" reco="" class="reco-close">X</button>
+        <button reco="" @name="close" class="reco-close">X</button>
         <div class="reco-title1">Countries List</div>
         <div class="reco-panel">
             <div class="reco-title2 reco-line"><span>Countries list</span></div>
@@ -268,21 +279,21 @@ button {
                 <div class="reco-header reco-label">Name</div>
                 <div class="reco-header">Action</div>
 
-                <div tpl="a1" n="4" @iterator="@countryIds" class="reco-tpl"></div>
+                <div tpl="a1" n="4" @collection="/RecoPageData/DemoUI/countryIds" class="reco-tpl"></div>
                 <div tpl="a1" class="reco-cell reco-value">
-                    <input reco="value" @value="/DemoCountry/@iterated/code" type="text" value="US">
+                    <input reco="" @value="/DemoCountry/{{iterated}}/code" type="text" value="US">
                 </div>
                 <div tpl="a1" class="reco-cell reco-value">
-                    <input reco="value" @value="/DemoCountry/@iterated/name" type="text" value="United States">
+                    <input reco="" @value="/DemoCountry/{{iterated}}/name" type="text" value="United States">
                 </div>
                 <div tpl="a1" reco="" class="reco-cell reco-bloc">
-                    <button @name="delCountry" reco="info" @info="/DemoCountry/@iterated/id" class="reco-danger">X</button>
+                    <button reco="" @name="delCountry" @info="/DemoCountry/{{iterated}}/id" class="reco-danger">X</button>
                 </div>
 
             </div>
         </div>
         <div class="reco-bar reco-center">
-            <button @name="createCountry" reco="info" @info="createCountry">Create Country</button>
+            <button reco="" @name="createCountry">Create Country</button>
         </div>
      </div>
         <div id="RecoPages.DemoHomePage">
@@ -297,15 +308,24 @@ button {
                 <div class="reco-header reco-label">Last Update</div>
                 <div class="reco-header">Actions</div>
 
-                <div tpl="a1" n="4" @iterator="@webFileIds" class="reco-tpl"></div>
-                <div tpl="a1" reco="innertext" @innertext="/RecoLocalStorageFile/@iterated/name" class="reco-cell reco-value">
-                    my-first-file.txt</div>
-                <div tpl="a1" reco="innertext" @innertext="/RecoLocalStorageFile/@iterated/size" class="reco-cell reco-value">15
-                    KB</div>
-                <div tpl="a1" reco="innertext" @innertext="/RecoLocalStorageFile/@iterated/lastUpdateYYYYMMDD" class="reco-cell reco-value">2024-06-05</div>
+                <div tpl="a1" n="4" class="reco-tpl" @collection="/RecoPageData/DemoHomePage/webFileIds">
+                </div>
+                <div tpl="a1" reco="" class="reco-cell reco-value" @innertext="/RecoLocalStorageFile/{{iterated}}/name">
+                    my-first-file.txt
+                </div>
+                <div tpl="a1" reco="" class="reco-cell reco-value" @innertext="/RecoLocalStorageFile/{{iterated}}/size">
+                    15 KB
+                </div>
+                <div tpl="a1" reco="" class="reco-cell reco-value" @innertext="/RecoLocalStorageFile/{{iterated}}/lastUpdate">
+                     2024-06-05
+                </div>
                 <div tpl="a1" class="reco-cell reco-bloc">
-                    <button @name="openWebFile" reco="info" @info="/RecoLocalStorageFile/@iterated/name">&gt;</button>
-                    <button @name="delWebFile" reco="info" @info="/RecoLocalStorageFile/@iterated/name" class="reco-danger">X</button>
+                    <button reco="" @name="openWebFile" @info="/RecoLocalStorageFile/{{iterated}}/name">
+                            &gt;
+                    </button>
+                    <button reco="" @name="delWebFile" @info="/RecoLocalStorageFile/{{iterated}}/name" class="reco-danger">
+                            X
+                    </button>
                 </div>
 
             </div>
@@ -313,25 +333,35 @@ button {
         </div>
         <div class="reco-form">
             <div class="reco-label"><span>New File Name</span></div>
-            <div class="reco-value"><input reco="value" @value="/RecoPageData/DemoHomePage/newFileName" type="text" value=""></div>
-            <div class="reco-bloc"><button @name="createFile" reco="info" @info="createFile">create</button></div>
+            <div class="reco-value">
+                <input reco="" @value="/RecoPageData/DemoHomePage/newFileName" type="text" value="">
+            </div>
+            <div class="reco-bloc">
+                <button reco="" @name="createFile">
+                        create
+                </button>
+            </div>
         </div>
         <div class="reco-bar reco-center">
-            <button @name="createDemo" reco="info" @info="demo">Create Demo</button>
-            <button @name="import" reco="info" @info="import">Import from disk</button>
+            <button reco="" @name="createDemo">
+                    Create Demo
+            </button>
+            <button reco="" @name="import">
+                    Import from disk
+            </button>
         </div>
 
      </div>
         <div id="RecoPages.DemoPersonListPage">
-        <button @name="close" reco="" class="reco-close">X</button>
+        <button reco="" @name="close" class="reco-close">X</button>
         <div class="reco-bar reco-center">
-            <button @name="export" reco="info" @info="export">Export to disk</button>
-            <button @name="exportAs" reco="info" @info="exportAs">Export to disk as ...</button>
+            <button reco="" @name="export">Export to disk</button>
+            <button reco="" @name="exportAs">Export to disk as ...</button>
         </div>
         <div class="reco-form">
             <div class="reco-label">File Name</div>
-            <div class="reco-value"><input reco="value" @value="/RecoPageData/all/fileName" type="text" value="myFile"></div>
-            <div class="reco-bloc"> <button @name="save" reco="info" @info="/RecoPageData/all/fileName">Save (as)</button></div>
+            <div class="reco-value"><input reco="" @value="/RecoPageData/*/fileName" type="text" value="myFile"></div>
+            <div class="reco-bloc"> <button reco="" @name="save" @info="/RecoPageData/*/fileName">Save (as)</button></div>
         </div>
 
         <div class="reco-title1">Persons List</div>
@@ -345,40 +375,40 @@ button {
                 <div class="reco-header reco-label">Birth Date</div>
                 <div class="reco-header">Actions</div>
 
-                <div tpl="a1" n="4" @iterator="@personIds" class="reco-tpl"></div>
-                <div tpl="a1" reco="innertext" @innertext="/DemoPerson/@iterated/firstname" class="reco-cell reco-value">John</div>
-                <div tpl="a1" reco="innertext" @innertext="/DemoPerson/@iterated/lastname" class="reco-cell reco-value">
+                <div tpl="a1" n="4" @collection="/RecoPageData/DemoPersonListPage/personIds" class="reco-tpl"></div>
+                <div tpl="a1" reco="" @innertext="/DemoPerson/{{iterated}}/firstname" class="reco-cell reco-value">John</div>
+                <div tpl="a1" reco="" @innertext="/DemoPerson/{{iterated}}/lastname" class="reco-cell reco-value">
                     Doe</div>
-                <div tpl="a1" reco="innertext" @innertext="/DemoPerson/@iterated/birthdate" class="reco-cell reco-value">1990-01-01</div>
+                <div tpl="a1" reco="" @innertext="/DemoPerson/{{iterated}}/birthdate" class="reco-cell reco-value">1990-01-01</div>
                 <div tpl="a1" reco="" class="reco-cell reco-bloc">
-                    <button @name="openPerson" reco="info" @info="/DemoPerson/@iterated/id">&gt;</button>
-                    <button @name="delPerson" reco="info" @info="/DemoPerson/@iterated/id" class="reco-danger">X</button>
+                    <button reco="" @name="openPerson" @info="/DemoPerson/{{iterated}}/id">&gt;</button>
+                    <button reco="" @name="delPerson" @info="/DemoPerson/{{iterated}}/id" class="reco-danger">X</button>
                 </div>
 
             </div>
         </div>
         <div class="reco-bar reco-center">
-            <button @name="createPerson" reco="info" @info="createPerson">Create Person</button>
-            <button @name="manageCountries" reco="info" @info="manageCountries">Manage Countries</button>
+            <button reco="" @name="createPerson">Create Person</button>
+            <button reco="" @name="manageCountries">Manage Countries</button>
         </div>
      </div>
         <div id="RecoPages.DemoPersonPage">
-        <button @name="close" reco="" class="reco-close">X</button>
+        <button reco="" @name="close" class="reco-close">X</button>
         <div class="reco-title1">Person</div>
         <div class="reco-form">
             <div class="reco-title2 reco-line"><span>First person</span></div>
             <div class="reco-label">First Name</div>
-            <div class="reco-value"><input reco="value" @value="/DemoPerson/@personId/firstname" type="text" value="John"></div>
+            <div class="reco-value"><input reco="" @value="/DemoPerson/{{/RecoPageData/DemoPersonPage/personId}}/firstname" type="text" value="John"></div>
             <div></div>
             <div class="reco-label">Last Name</div>
-            <div class="reco-value"><input reco="value" @value="/DemoPerson/@personId/lastname" type="text" value="Doe"></div>
+            <div class="reco-value"><input reco="" @value="/DemoPerson/{{/RecoPageData/DemoPersonPage/personId}}/lastname" type="text" value="Doe"></div>
             <div></div>
             <div class="reco-label">Birth Date</div>
-            <div class="reco-value"><input reco="value" @value="/DemoPerson/@personId/birthdate" type="date" value="1990-01-01"></div>
+            <div class="reco-value"><input reco="" @value="/DemoPerson/{{/RecoPageData/DemoPersonPage/personId}}/birthdate" type="date" value="1990-01-01"></div>
             <div></div>
             <div class="reco-label">Country</div>
             <div class="reco-value">
-                <select reco="value" @value="/DemoPerson/@personId/countryId" @itemIds="/RecoPageData/DemoPersonPage/countryIds" @valueIds="/DemoCountry/@itemId/id" @labels="/DemoCountry/@itemId/descr">
+                <select reco="" @value="/DemoPerson/{{/RecoPageData/DemoPersonPage/personId}}/countryId" @tplOptionCollection="/RecoPageData/DemoUI/countryIds" @tplOptionValues="/DemoCountry/{{optionIterated}}/id" @tplOptionLabels="/DemoCountry/{{optionIterated}}/name">
                     <option value="FR">France</option>
                     <option value="USA" selected>United States of America</option>
                     <option value="GB">United Kingdom</option>
@@ -396,54 +426,60 @@ button {
                 <div class="reco-header reco-label">Country</div>
                 <div class="reco-header">Actions</div>
 
-                <div tpl="a1" n="4" @iterator="@person.addressIds" class="reco-tpl"></div>
-                <div tpl="a1" reco="innertext" @innertext="/DemoAddress/@iterated/lines" class="reco-cell reco-value">10 Downing Stree</div>
-                <div tpl="a1" reco="innertext" @innertext="/DemoAddress/@iterated/city" class="reco-cell reco-value">London</div>
-                <div tpl="a1" reco="innertext" @innertext="/DemoAddress/@iterated/countryName" class="reco-cell reco-value">United Kingdom</div>
+                <div tpl="a1" n="4" @collection="/DemoPerson/{{/RecoPageData/DemoPersonPage/personId}}/addressIds" class="reco-tpl"></div>
+                <div tpl="a1" reco="" @innertext="/DemoAddress/{{iterated}}/lines" class="reco-cell reco-value">10 Downing Stree</div>
+                <div tpl="a1" reco="" @innertext="/DemoAddress/{{iterated}}/city" class="reco-cell reco-value">London</div>
+                <div tpl="a1" reco="" @innertext="/DemoAddress/{{iterated}}/country_.name" class="reco-cell reco-value">United Kingdom</div>
                 <div tpl="a1" reco="" class="reco-cell reco-bloc">
-                    <button @name="openAddress" reco="info" @info="/DemoAddress/@iterated/id">&gt;</button>
-                    <button @name="delAddress" reco="info" @info="/DemoAddress/@iterated/id" class="reco-danger">X</button>
+                    <button reco="" @name="openAddress" @info="/DemoAddress/{{iterated}}/id">&gt;</button>
+                    <button reco="" @name="delAddress" @info="/DemoAddress/{{iterated}}/id" class="reco-danger">X</button>
                 </div>
 
             </div>
         </div>
         <div class="reco-bar reco-center">
-            <button @name="createAddress" reco="info" @info="createAddress">Create Address</button>
+            <button reco="" @name="createAddress">Create Address</button>
         </div>
      </div>
     </div>
     <script>"use strict";
 (() => {
-  // lib.reco/src/reco-core.ts
+  // lib.reco/src/reco-core.js
   var Reco = {
     // --------------------------------------------------------------------------------------------
     logUI: function(...args) {
       console.log(...args);
       const logElt = document.getElementById("console");
-      if (!logElt) return;
+      if (!logElt)
+        return;
       let first = true;
       for (let arg of args) {
         if (typeof arg === "object") {
-          if (!first) logElt.textContent += "\n";
+          if (!first)
+            logElt.textContent += "\n";
           logElt.textContent += JSON.stringify(arg, void 0, 4) + " ";
-        } else logElt.textContent += arg + " ";
+        } else
+          logElt.textContent += arg + " ";
         first = false;
       }
       logElt.textContent += "\n";
     },
     // --------------------------------------------------------------------------------------------
-    YYYYMMDD2Date: function(value) {
-      if (!value) return void 0;
+    txt2dt: function(value) {
+      if (!value)
+        return void 0;
       const match = value.match(/^(\d{4})-(\d{2})-(\d{2})$/);
-      if (!match) return void 0;
+      if (!match)
+        return void 0;
       const year = parseInt(match[1], 10);
       const month = parseInt(match[2], 10) - 1;
       const day = parseInt(match[3], 10);
       return new Date(year, month, day);
     },
     // --------------------------------------------------------------------------------------------
-    Date2YYYYMMDD: function(value) {
-      if (!value) return void 0;
+    dt2txt: function(value) {
+      if (!value)
+        return void 0;
       const year = value.getFullYear();
       const month = (value.getMonth() + 1).toString().padStart(2, "0");
       const day = value.getDate().toString().padStart(2, "0");
@@ -454,7 +490,8 @@ button {
       const parts = dotExp.split(".");
       let elt = root;
       for (const part of parts) {
-        if (elt === void 0 || elt === null) return void 0;
+        if (elt === void 0 || elt === null)
+          return void 0;
         elt = elt[part];
       }
       return elt;
@@ -472,7 +509,8 @@ button {
       this._name = name;
     }
     addListener(listener) {
-      if (this._listeners.indexOf(listener) !== -1) return;
+      if (this._listeners.indexOf(listener) !== -1)
+        return;
       this._listeners.push(listener);
     }
     removeListener(listener) {
@@ -556,7 +594,8 @@ button {
         if (currentIndex !== -1) {
           const oldVal = this._values[currentIndex];
           this._values[currentIndex] = value;
-          this.notifyListeners("update", key, oldVal, value);
+          if (oldVal !== value)
+            this.notifyListeners("update", key, oldVal, value);
           return;
         } else {
           this._keys.push(key);
@@ -572,7 +611,8 @@ button {
           this._values.splice(currentIndex, 1, value);
           this._keys.splice(index, 0, key);
           this._values.splice(index, 0, value);
-          this.notifyListeners("update", key, oldVal, value);
+          if (oldVal !== value)
+            this.notifyListeners("update", key, oldVal, value);
         } else {
           this._keys.splice(index, 0, key);
           this._values.splice(index, 0, value);
@@ -601,9 +641,22 @@ button {
     }
   };
 
-  // lib.reco/src/reco-app.ts
+  // lib.reco/src/reco-app.js
   var RECO_DEFAULT_DB_NAME = "reco-default";
   var RECO_FAT_DB_NAME = "reco-fat";
+  var RecoTypeNames;
+  (function(RecoTypeNames2) {
+    RecoTypeNames2["string"] = "string";
+    RecoTypeNames2["strings"] = "strings";
+    RecoTypeNames2["number"] = "number";
+    RecoTypeNames2["numbers"] = "numbers";
+    RecoTypeNames2["boolean"] = "boolean";
+    RecoTypeNames2["booleans"] = "booleans";
+    RecoTypeNames2["Date"] = "Date";
+    RecoTypeNames2["Dates"] = "Dates";
+    RecoTypeNames2["List"] = "List";
+    RecoTypeNames2["Ref"] = "Ref";
+  })(RecoTypeNames || (RecoTypeNames = {}));
   var RecoApp = class {
     listeners = [];
     listening = true;
@@ -630,8 +683,12 @@ button {
       db.addListener(this);
       return this.dbMap[dbName] = db;
     }
+    clearDefaultData() {
+      this.dbMap[RECO_DEFAULT_DB_NAME].clearData();
+    }
     addListener(listener) {
-      if (this.listeners.indexOf(listener) !== -1) return;
+      if (this.listeners.indexOf(listener) !== -1)
+        return;
       this.listeners.push(listener);
     }
     removeListener(listener) {
@@ -641,14 +698,21 @@ button {
       }
     }
     notifyChange(action, key, oldVal, newVal) {
-      if (!this.listening) return;
-      console.log(">     notifyChange", action, key, oldVal, newVal);
+      if (!this.listening)
+        return;
+      if (action == "remove" && key.endsWith("/id"))
+        console.log(">     notifyChange delete object ", key);
+      else if (action == "add" && key.endsWith("/id"))
+        console.log(">     notifyChange create object ", key);
+      else
+        console.log(">     notifyChange", action, key, oldVal, newVal);
       for (const listener of this.listeners) {
         listener.notifyChange(action, key, oldVal, newVal);
       }
     }
     startTx(dbName) {
-      if (!this.backupStack[dbName]) this.backupStack[dbName] = [];
+      if (!this.backupStack[dbName])
+        this.backupStack[dbName] = [];
       this.backupStack[dbName].push(this.toJson(dbName));
     }
     commitTx(dbName) {
@@ -666,17 +730,21 @@ button {
         const key = keys[i];
         const [, metaClassName, id, fieldName] = key.split("/");
         const metaClass = this.metaClassListDict.getValueFor(metaClassName);
-        if (!metaClass?.persist && persistOnly) continue;
+        if (!metaClass?.persist && persistOnly)
+          continue;
         const metaField = metaClass?.fields.getValueFor(fieldName);
+        if (metaField && !metaField?.persist && persistOnly)
+          continue;
         const value = this.toJsonConvert(metaClass, metaField, keys[i], db.getValueFor(keys[i]));
-        if (value === void 0) continue;
+        if (value === void 0)
+          continue;
         json[keys[i]] = value;
       }
       return json;
     }
     toJsonConvert(metaClass, metaField, key, value) {
-      if (metaField && metaField.typeName === "Date" /* Date */) {
-        value = Reco.Date2YYYYMMDD(value);
+      if (metaField && metaField.typeName === RecoTypeNames.Date) {
+        value = Reco.dt2txt(value);
       }
       return value;
     }
@@ -690,13 +758,14 @@ button {
       }
     }
     fromJsonConvert(metaClass, metaField, key, value) {
-      if (metaField && metaField.typeName === "Date" /* Date */) {
-        value = Reco.YYYYMMDD2Date(value);
+      if (metaField && metaField.typeName === RecoTypeNames.Date) {
+        value = Reco.txt2dt(value);
       }
       return value;
     }
     existingObject(metaClass, id) {
-      if (!id) return void 0;
+      if (!id)
+        return void 0;
       const dbName = metaClass.dbName;
       if (this.getDb(dbName).getValueFor(`/${metaClass.name}/${id}/id`))
         return new metaClass.targetAppClass(this, id, metaClass);
@@ -706,7 +775,8 @@ button {
       const objects = [];
       for (const id of ids) {
         const obj = this.existingObject(metaClass, id);
-        if (obj) objects.push(obj);
+        if (obj)
+          objects.push(obj);
       }
       return objects;
     }
@@ -736,24 +806,42 @@ button {
       });
     }
     deleteObjects(metaClass, ids) {
-      if (ids.length === 0) return;
+      if (ids.length === 0)
+        return;
       for (const metaField of metaClass.fields.values) {
-        if (!metaField) continue;
-        if (metaField.cascadeDel && metaField.typeName == "Ref" /* Ref */) {
+        if (!metaField)
+          continue;
+        if (metaField.cascadeDel && metaField.typeName == RecoTypeNames.Ref) {
           for (let id of ids) {
             const obj = this.existingObject(metaClass, id);
-            if (!obj) continue;
+            if (!obj)
+              continue;
             const refObj = obj[metaField.name];
-            if (refObj) this.deleteObjects(metaField.targetMetaClass, [refObj.$id]);
+            if (refObj)
+              this.deleteObjects(metaField.targetMetaClass, [refObj.$id]);
           }
-        } else if (metaField.cascadeDel && metaField.typeName == "List" /* List */) {
+        } else if (metaField.cascadeDel && metaField.typeName == RecoTypeNames.List) {
           for (let id of ids) {
             const obj = this.existingObject(metaClass, id);
-            if (!obj) continue;
-            const listObj = obj[metaField.name];
-            if (listObj.length > 0) {
-              const idsToDelete = listObj.map((v) => v.$id);
+            if (!obj)
+              continue;
+            const idsToDelete = obj[metaField.name];
+            if (idsToDelete.length > 0) {
               this.deleteObjects(metaField.targetMetaClass, idsToDelete);
+            }
+          }
+        }
+      }
+      for (const aMetaClass of this.metaClassListDict.values) {
+        if (!aMetaClass)
+          continue;
+        for (const metaField of aMetaClass.fields.values) {
+          if (!metaField)
+            continue;
+          if (metaField.typeName == RecoTypeNames.Ref && metaField.targetMetaClass == metaClass) {
+            for (let anObj of this.getAllObjects(aMetaClass)) {
+              if (ids.includes(anObj[metaField.name]))
+                anObj[metaField.name] = void 0;
             }
           }
         }
@@ -770,17 +858,6 @@ button {
           }
         }
       }
-      for (const aMetaClass of this.metaClassListDict.values) {
-        if (!aMetaClass) continue;
-        for (const metaField of aMetaClass.fields.values) {
-          if (!metaField) continue;
-          if (metaField.typeName == "Ref" /* Ref */ && metaField.targetMetaClass == metaClass) {
-            for (let anObj of this.getAllObjects(aMetaClass)) {
-              if (!anObj[metaField.name]) anObj[metaField.name] = void 0;
-            }
-          }
-        }
-      }
     }
     searchObjects(metaClass, filter) {
       return this.getAllObjects(metaClass).filter(filter);
@@ -790,9 +867,11 @@ button {
         for (const key in model) {
           const objValue = obj[key];
           if (model[key] instanceof RegExp) {
-            if (!model[key].test(objValue)) return false;
+            if (!model[key].test(objValue))
+              return false;
           } else {
-            if (objValue !== model[key]) return false;
+            if (objValue !== model[key])
+              return false;
           }
         }
         return true;
@@ -812,29 +891,47 @@ button {
       this.dbName = dbName;
       targetAppClass["metaClass"] = this;
       this.name = targetAppClass.name;
-      if (this.name.startsWith("_")) this.name = this.name.substring(1);
+      if (this.name.startsWith("_"))
+        this.name = this.name.substring(1);
     }
   };
   var RecoMetaField = class {
     metaClass;
     name;
+    persist = true;
     typeName = void 0;
     targetMetaClass = void 0;
     backMetaField = void 0;
     cascadeDel = false;
-    constructor(metaClass, name, typeName) {
+    constructor(metaClass, name, typeName, targetMetaClass = void 0, backMetaFieldOrName = void 0) {
       this.metaClass = metaClass;
       this.name = name;
       this.typeName = typeName;
+      if (typeName === RecoTypeNames.List && !name.endsWith("Ids"))
+        throw new Error(`List type field name must end with 'Ids': ${name}`);
+      if (typeName === RecoTypeNames.Ref && !name.endsWith("Id"))
+        throw new Error(`Ref type field name must end with 'Id': ${name}`);
       this.metaClass.fields.setValue(this.name, this);
-    }
-    setTargetMetaClass(targetMetaClass, cascadeDel = false) {
       this.targetMetaClass = targetMetaClass;
+      if (backMetaFieldOrName) {
+        let backMetaField;
+        if (typeof backMetaFieldOrName === "string") {
+          backMetaField = targetMetaClass.fields.getValueFor(backMetaFieldOrName);
+        } else {
+          backMetaField = backMetaFieldOrName;
+        }
+        this.backMetaField = backMetaField;
+        if (backMetaField && backMetaField.backMetaField !== this) {
+          backMetaField.backMetaField = this;
+        }
+      }
+    }
+    setCascadeDel(cascadeDel) {
       this.cascadeDel = cascadeDel;
       return this;
     }
-    setBackMetaField(backMetaField) {
-      this.backMetaField = backMetaField;
+    setPersist(persist) {
+      this.persist = persist;
       return this;
     }
   };
@@ -846,13 +943,17 @@ button {
     get $dbName() {
       return this.$metaClass.dbName;
     }
+    get id() {
+      return this.$id;
+    }
     constructor(app, id, metaClass) {
       this.$app = app;
       this.$metaClass = metaClass;
       this.$id = id ?? crypto.randomUUID();
       this.$db = this.$app.getDb(this.$metaClass.dbName);
       const objkey = "/" + metaClass.name + "/" + this.$id;
-      if (!this.$db.isKey(objkey + "/id")) this.$db.setValue(objkey + "/id", this.$id);
+      if (!this.$db.isKey(objkey + "/id"))
+        this.$db.setValue(objkey + "/id", this.$id);
     }
     delete() {
       this.$app.deleteObjects(this.$metaClass, [this.$id]);
@@ -874,10 +975,13 @@ button {
     }
     getListIds(listname) {
       const listfield = this.$metaClass.fields.getValueFor(listname);
-      if (!listfield) throw new Error("List field not found: " + listname);
-      if (!listfield.targetMetaClass) throw new Error("List field target meta class not found for: " + listname);
+      if (!listfield)
+        throw new Error("List field not found: " + listname);
+      if (!listfield.targetMetaClass)
+        throw new Error("List field target meta class not found for: " + listname);
       const listbackfield = listfield.backMetaField;
-      if (!listbackfield) throw new Error("List field back reference not found for: " + listname);
+      if (!listbackfield)
+        throw new Error("List field back reference not found for: " + listname);
       const filter = (key, value) => {
         return value == this.$id && key.startsWith(`/${listfield.targetMetaClass.name}/`) && key.endsWith(`/${listbackfield.name}`);
       };
@@ -889,7 +993,7 @@ button {
     }
   };
 
-  // lib.reco/src/reco-localstorage.ts
+  // lib.reco/src/reco-localstorage.js
   var RecoLocalStorage = class {
     app;
     dbfat;
@@ -963,19 +1067,19 @@ button {
       this.setField("lastUpdate", value);
     }
     get lastUpdateYYYYMMDD() {
-      return Reco.Date2YYYYMMDD(this.lastUpdate);
+      return Reco.dt2txt(this.lastUpdate);
     }
     set lastUpdateYYYYMMDD(value) {
-      this.lastUpdate = Reco.YYYYMMDD2Date(value);
+      this.lastUpdate = Reco.txt2dt(value);
     }
   };
   var metaClassRecoLocalStorageFile = new RecoMetaClass(RecoLocalStorageFile, RECO_FAT_DB_NAME);
-  new RecoMetaField(metaClassRecoLocalStorageFile, "name", "string" /* string */);
-  new RecoMetaField(metaClassRecoLocalStorageFile, "appName", "string" /* string */);
-  new RecoMetaField(metaClassRecoLocalStorageFile, "size", "number" /* number */);
-  new RecoMetaField(metaClassRecoLocalStorageFile, "lastUpdate", "Date" /* Date */);
+  new RecoMetaField(metaClassRecoLocalStorageFile, "name", RecoTypeNames.string);
+  new RecoMetaField(metaClassRecoLocalStorageFile, "appName", RecoTypeNames.string);
+  new RecoMetaField(metaClassRecoLocalStorageFile, "size", RecoTypeNames.number);
+  new RecoMetaField(metaClassRecoLocalStorageFile, "lastUpdate", RecoTypeNames.Date);
 
-  // lib.reco/src/reco-browserfile.ts
+  // lib.reco/src/reco-browserfile.js
   var RecoBrowserJsonFile = class {
     // --------------------------------------------------------------------------------------------
     fileExtension;
@@ -988,9 +1092,11 @@ button {
     // --------------------------------------------------------------------------------------------
     async ensurePermission(handle, mode = "readwrite") {
       const fsHandle = handle;
-      if (!fsHandle.queryPermission || !fsHandle.requestPermission) return true;
+      if (!fsHandle.queryPermission || !fsHandle.requestPermission)
+        return true;
       const query = await fsHandle.queryPermission({ mode });
-      if (query === "granted") return true;
+      if (query === "granted")
+        return true;
       const request = await fsHandle.requestPermission({ mode });
       return request === "granted";
     }
@@ -1050,7 +1156,8 @@ button {
     }
     // --------------------------------------------------------------------------------------------
     async saveAs() {
-      if (!this.fileContent) return false;
+      if (!this.fileContent)
+        return false;
       this.fileHandle = await this.showSaveFilePicker();
       if (!this.fileHandle) {
         return false;
@@ -1063,7 +1170,8 @@ button {
     }
     // --------------------------------------------------------------------------------------------
     async save() {
-      if (!this.fileContent) return false;
+      if (!this.fileContent)
+        return false;
       if (!this.fileHandle)
         return await this.saveAs();
       else {
@@ -1073,22 +1181,21 @@ button {
         return true;
       }
     }
-    // --------------------------------------------------------------------------------------------
   };
 
-  // lib.reco/src/reco-ui.ts
+  // lib.reco/src/reco-ui.js
   var RecoPageData = class _RecoPageData extends RecoGenericClass {
     static metaClass;
     constructor(app, id, metaClass = _RecoPageData.metaClass) {
       super(app, id, metaClass);
     }
   };
-  new RecoMetaClass(RecoPageData, RECO_DEFAULT_DB_NAME, false);
+  new RecoMetaClass(RecoPageData, RECO_FAT_DB_NAME, false);
   var RecoUI = class {
     app;
     currentPage;
     get appData() {
-      return new RecoPageData(this.app, "all");
+      return new RecoPageData(this.app, "*");
     }
     localStorage = void 0;
     diskTextFile = void 0;
@@ -1115,43 +1222,53 @@ button {
       return pageHtmlSrc;
     }
     notifyChange(action, key, oldVal, newVal) {
-      if (this.currentPage) this.currentPage.notifyChange(action, key, oldVal, newVal);
+      if (this.currentPage)
+        this.currentPage.notifyChange(action, key, oldVal, newVal);
     }
-    load(fileName) {
+    load(fileName, reset, dbName = RECO_DEFAULT_DB_NAME) {
       this.appData.setField("fileName", fileName);
-      if (!fileName) return;
+      if (!fileName)
+        return;
       const content = this.localStorage?.loadFile(fileName);
-      if (!content) return;
-      this.app.fromJson(JSON.parse(content), RECO_DEFAULT_DB_NAME);
+      if (!content)
+        return;
+      if (reset)
+        this.app.getDb(dbName).clearData();
+      this.app.fromJson(JSON.parse(content), dbName);
     }
-    save(fileName = void 0) {
-      if (!fileName) fileName = this.appData.getField("fileName");
-      else this.appData.setField("fileName", fileName);
-      if (!fileName) return;
-      const content = JSON.stringify(this.app.toJson(RECO_DEFAULT_DB_NAME, true), null, 4);
+    save(fileName = void 0, dbName = RECO_DEFAULT_DB_NAME) {
+      if (!fileName)
+        fileName = this.appData.getField("fileName");
+      else
+        this.appData.setField("fileName", fileName);
+      if (!fileName)
+        return;
+      const content = JSON.stringify(this.app.toJson(dbName, true), null, 4);
       this.localStorage?.saveFile(fileName, content);
     }
-    async importFromDiskFile() {
+    async importFromDiskFile(reset, dbName = RECO_DEFAULT_DB_NAME) {
       const diskTextFile = new RecoBrowserJsonFile("Choose a file to import", this.app.name + ".json");
       if (await diskTextFile.open(false)) {
         this.diskTextFile = diskTextFile;
         const json = JSON.parse(diskTextFile.fileContent);
-        this.app.fromJson(json, RECO_DEFAULT_DB_NAME);
+        if (reset)
+          this.app.getDb(dbName).clearData();
+        this.app.fromJson(json, dbName);
         return true;
       }
       return false;
     }
-    async exportToDiskFile() {
+    async exportToDiskFile(dbName = RECO_DEFAULT_DB_NAME) {
       if (!this.diskTextFile)
         this.diskTextFile = new RecoBrowserJsonFile("Choose a file to export", this.app.name + ".json");
-      const json = this.app.toJson(RECO_DEFAULT_DB_NAME, true);
+      const json = this.app.toJson(dbName, true);
       this.diskTextFile.fileContent = JSON.stringify(json, null, 4);
       return await this.diskTextFile.save();
     }
-    async exportToDiskAsFile() {
+    async exportToDiskAsFile(dbName = RECO_DEFAULT_DB_NAME) {
       if (!this.diskTextFile)
         this.diskTextFile = new RecoBrowserJsonFile("Choose a file to export", this.app.name + ".json");
-      const json = this.app.toJson(RECO_DEFAULT_DB_NAME, true);
+      const json = this.app.toJson(dbName, true);
       this.diskTextFile.fileContent = JSON.stringify(json, null, 4);
       return await this.diskTextFile.saveAs();
     }
@@ -1162,6 +1279,8 @@ button {
       return this.constructor.name;
     }
     dynElts = {};
+    iterated = void 0;
+    optionIterated = void 0;
     get pageData() {
       return this.ui.app.getObject(RecoPageData.metaClass, this.id);
     }
@@ -1172,12 +1291,83 @@ button {
     async display() {
       this.dynElts = {};
       const content = await this.ui.getPage(this.id);
-      if (!content) throw new Error(`Page with id "${this.id}" not found.`);
+      if (!content)
+        throw new Error(`Page with id "${this.id}" not found.`);
       document.getElementById("reco-root").innerHTML = content;
       this.ui.currentPage = this;
       this.generateTemplates();
       this.scanForDynElts();
-      this.refreshDynElts();
+    }
+    getObjForFieldname(metaclassname, id, fieldname) {
+      if (metaclassname == "RecoPageData" && id == this.ui.constructor.name && fieldname in this.ui)
+        return this.ui;
+      else if (metaclassname == "RecoPageData" && id == this.constructor.name && fieldname in this)
+        return this;
+      else
+        return this.ui.app.existingObject(this.ui.app.metaClassListDict.getValueFor(metaclassname), id);
+    }
+    getValue(metaclassname, id, fieldnames) {
+      const fieldname = fieldnames.split(".")[0];
+      let obj = this.getObjForFieldname(metaclassname, id, fieldname);
+      if (!obj)
+        return void 0;
+      if (obj instanceof RecoPageData)
+        return obj.getField(fieldname);
+      else
+        return Reco.evalDotExp(obj, fieldnames);
+    }
+    setValue(value, metaclassname, id, fieldnames) {
+      const fieldname = fieldnames.split(".")[0];
+      let obj = this.getObjForFieldname(metaclassname, id, fieldname);
+      if (!obj)
+        throw new Error(`Object not found for metaclass "${metaclassname}" with id "${id}".`);
+      if (obj instanceof RecoPageData)
+        obj.setField(fieldname, value);
+      else {
+        if (fieldnames.indexOf(".") >= 0)
+          obj = Reco.evalDotExp(obj, fieldnames.substring(0, fieldnames.lastIndexOf(".")));
+        obj[fieldname] = value;
+      }
+    }
+    getEltAtts(elt) {
+      const atts = [];
+      for (const attr of Array.from(elt.attributes)) {
+        if (attr.name.startsWith("@"))
+          atts.push(attr.name);
+      }
+      return atts;
+    }
+    resolveExp(exp, dynTexts2ignore = ["optionIterated"]) {
+      if (exp.indexOf("{{") < 0)
+        return exp;
+      let start = 0;
+      while (exp.indexOf("{{", start) >= 0) {
+        start = exp.indexOf("{{", start);
+        const end = exp.indexOf("}}", start);
+        const dynText = exp.substring(start + 2, end);
+        let ignore = false;
+        for (const dynText2ignore of dynTexts2ignore) {
+          if (dynText.indexOf(dynText2ignore) >= 0) {
+            start = end + 2;
+            ignore = true;
+            break;
+          }
+        }
+        if (ignore)
+          continue;
+        let resolved = "";
+        if (dynText.startsWith("/")) {
+          const [, metaclassname, id, fieldname] = dynText.split("/");
+          resolved = this.getValue(metaclassname, id, fieldname);
+          resolved = resolved ?? "";
+        } else {
+          resolved = Reco.evalDotExp(this, dynText);
+          resolved = resolved ?? "";
+        }
+        exp = exp.substring(0, start) + resolved + exp.substring(end + 2);
+        start = end + 2;
+      }
+      return exp;
     }
     generateTemplates() {
       const templates = {};
@@ -1185,13 +1375,12 @@ button {
         const element = elt;
         const tpl = element.getAttribute("tpl");
         let template = templates[tpl];
-        if (!template) template = templates[tpl] = { elements: [] };
+        if (!template)
+          template = templates[tpl] = { elements: [] };
         if (element.classList.contains("reco-tpl")) {
-          const iterator = element.getAttribute("@iterator");
-          if (!iterator) throw new Error(`Iterator not found for template "${tpl}"`);
-          if (iterator[0] !== "@") throw new Error(`Iterator for template "${tpl}" must start with '@'`);
-          template.iterator = iterator.substring(1);
           template.root = element;
+          if (!element.hasAttribute("@collection"))
+            throw new Error(`Template "${tpl}" must have a @collection attribute.`);
         } else {
           element.removeAttribute("tpl");
           element.removeAttribute("n");
@@ -1199,17 +1388,22 @@ button {
         }
       }
       for (const template of Object.values(templates)) {
-        const list = Reco.evalDotExp(this, template.iterator);
-        for (const iterated of list) {
+        const collectionExp = this.resolveExp(template.root.getAttribute("@collection"));
+        const [, metaclassnameCollection, idCollection, fieldnameCollection] = collectionExp.split("/");
+        const collection = this.getValue(metaclassnameCollection, idCollection, fieldnameCollection) ?? [];
+        for (this.iterated of collection) {
           for (const element of template.elements) {
             const copy = element.cloneNode(true);
             const copyElts = [copy];
             copyElts.push(...Array.from(copy.querySelectorAll("[reco]")));
             for (let copyElt of copyElts) {
-              const keyname = copyElt.getAttribute("reco");
-              if (!keyname) continue;
-              const key = copyElt.getAttribute("@" + keyname);
-              copyElt.setAttribute("@" + keyname, key.replace("@iterated", iterated));
+              const attnames = this.getEltAtts(copyElt);
+              for (const attname of attnames) {
+                const attValue = copyElt.getAttribute(attname);
+                if (!attValue)
+                  continue;
+                copyElt.setAttribute(attname, this.resolveExp(attValue));
+              }
             }
             template.root.parentElement.appendChild(copy);
           }
@@ -1220,174 +1414,208 @@ button {
           element.remove();
         }
       }
-    }
-    scanForDynElts() {
-      document.getElementById("reco-root").querySelectorAll("[reco]").forEach((el) => {
-        const keyname = el.getAttribute("reco");
-        const keyInit = el.getAttribute("@" + keyname);
-        if (!keyInit || !keyInit.startsWith("/")) return;
-        if (!keyInit) return;
-        let [, metaClassname, id, fieldname] = keyInit.split("/");
-        if (id.startsWith("@")) id = this[id.substring(1)];
-        const key = `/${metaClassname}/${id}/${fieldname}`;
-        el.setAttribute("@" + keyname, key);
-        if (!this.dynElts[key]) this.dynElts[key] = [];
-        this.dynElts[key].push(el);
-        if (el.tagName === "SELECT") {
-          const [, metaClassname2, id2, fieldname2] = el.getAttribute("@itemIds").split("/");
-          const metaclass = this.ui.app.metaClassListDict.getValueFor(metaClassname2);
-          if (!metaclass) throw new Error(`MetaClass not found for ${metaClassname2}`);
-          const itemIds = this.ui.app.existingObject(metaclass, id2).getField(fieldname2);
-          const [, valuesMetaclassname, , valuesFieldname] = el.getAttribute("@valueIds").split("/");
-          const [, labelsMetaclassname, , labelsFieldname] = el.getAttribute("@labels").split("/");
-          const valuesMetaclass = this.ui.app.metaClassListDict.getValueFor(valuesMetaclassname);
-          if (!valuesMetaclass) throw new Error(`MetaClass not found for ${valuesMetaclassname}`);
-          const labelsMetaclass = this.ui.app.metaClassListDict.getValueFor(labelsMetaclassname);
-          if (!labelsMetaclass) throw new Error(`MetaClass not found for ${labelsMetaclassname}`);
-          el.innerHTML = '<option value=""></option>';
-          for (const itemId of itemIds) {
-            const option = document.createElement("option");
-            const obj = this.ui.app.existingObject(valuesMetaclass, itemId);
-            option.value = obj[valuesFieldname];
-            option.textContent = obj[labelsFieldname];
-            el.appendChild(option);
-          }
+      document.getElementById("reco-root").querySelectorAll("select[reco]").forEach((_el) => {
+        const elt = _el;
+        const [, optionCollectionMetaclass, optionCollectionId, optionCollectionFieldname] = elt.getAttribute("@tplOptionCollection").split("/");
+        const optionValuesExp = elt.getAttribute("@tplOptionValues");
+        const optionLabelsExp = elt.getAttribute("@tplOptionLabels");
+        const options = this.getValue(optionCollectionMetaclass, optionCollectionId, optionCollectionFieldname);
+        elt.innerHTML = '<option value=""></option>';
+        for (this.optionIterated of options) {
+          const option = document.createElement("option");
+          option.setAttribute("reco", "");
+          option.setAttribute("@value", this.resolveExp(optionValuesExp, []));
+          option.setAttribute("@innertext", this.resolveExp(optionLabelsExp, []));
+          elt.appendChild(option);
         }
+        elt.removeAttribute("@tplOptionCollection");
+        elt.removeAttribute("@tplOptionValues");
+        elt.removeAttribute("@tplOptionLabels");
       });
     }
-    refreshDynElts() {
-      const keysObjects = {};
-      for (const key in this.dynElts) {
-        this.refreshUIDynForKey(key, keysObjects);
-        for (const elt of this.dynElts[key]) {
-          if (elt.tagName === "INPUT" || elt.tagName === "TEXTAREA") {
-            elt.onchange = (event) => {
-              this.onUIChangeDynForElt(elt);
-            };
-          } else if (elt.tagName === "SELECT") {
-            elt.onchange = (event) => {
-              this.onUIChangeDynForElt(elt);
-            };
-          }
+    registerDynElt(_el) {
+      const elt = _el;
+      const attnames = this.getEltAtts(elt);
+      for (const attname of attnames) {
+        let attValues = elt.getAttribute(attname);
+        if (!attValues)
+          continue;
+        attValues = this.resolveExp(attValues);
+        elt.setAttribute(attname, attValues);
+        for (let attValue of attValues.split(",")) {
+          if (!attValue.startsWith("/"))
+            continue;
+          let [, metaClassname, id, fieldname] = attValue.split("/");
+          fieldname = fieldname.split(".")[0];
+          const key = `/${metaClassname}/${id}/${fieldname}`;
+          if (!this.dynElts[key])
+            this.dynElts[key] = {};
+          if (!this.dynElts[key][attname])
+            this.dynElts[key][attname] = [];
+          this.dynElts[key][attname].push(elt);
+          this.refreshUIDynForElt(key, attname, elt);
         }
       }
-      document.getElementById("reco-root").querySelectorAll("button[reco]").forEach((el) => {
-        const elt = el;
+    }
+    scanForDynElts() {
+      document.getElementById("reco-root").querySelectorAll("option[reco]").forEach((_el) => {
+        this.registerDynElt(_el);
+      });
+      document.getElementById("reco-root").querySelectorAll("[reco]").forEach((_el) => {
+        if (_el.tagName === "OPTION")
+          return;
+        this.registerDynElt(_el);
+      });
+      document.getElementById("reco-root").querySelectorAll("input,textarea,select").forEach((_el) => {
+        const elt = _el;
+        if (!elt.hasAttribute("@value"))
+          return;
+        elt.onchange = (event) => {
+          this.onUIChangeDynForElt(elt);
+        };
+      });
+      document.getElementById("reco-root").querySelectorAll("button[reco]").forEach((_el) => {
+        const elt = _el;
         elt.onclick = (event) => {
           this.action(elt);
         };
       });
     }
-    action(elt) {
-      alert(`Action @name="${elt.getAttribute("@name")}", @info="${elt.getAttribute("@info")}"`);
-    }
     onUIChangeDynForElt(elt) {
-      const keyname = elt.getAttribute("reco");
-      const key = elt.getAttribute("@" + keyname);
-      const [, metaClassname, id, fieldname] = key.split("/");
-      const metaclass = this.ui.app.metaClassListDict.getValueFor(metaClassname);
-      if (!metaclass) throw new Error(`MetaClass not found for ${metaClassname}`);
-      let obj = this.ui.app.getObject(metaclass, id);
-      let oldValue = void 0;
-      if (obj instanceof RecoPageData) {
-        oldValue = obj.getField(fieldname);
-      } else oldValue = obj[fieldname];
+      const [, metaClassname, id, fieldname] = elt.getAttribute("@value").split("/");
+      const oldValue = this.getValue(metaClassname, id, fieldname);
       let newValue = void 0;
-      if (["INPUT", "TEXTAREA"].includes(elt.tagName)) {
+      if ("INPUT" == elt.tagName) {
+        let inputEl = elt;
         if (elt.getAttribute("type") === "date" && oldValue) {
-          newValue = elt.valueAsDate ? elt.valueAsDate : void 0;
+          newValue = inputEl.valueAsDate ? inputEl.valueAsDate : void 0;
         } else if (elt.getAttribute("type") === "boolean") {
-          newValue = elt.checked;
+          newValue = inputEl.checked;
         } else if (elt.getAttribute("type") === "number") {
-          newValue = elt.valueAsNumber;
+          newValue = inputEl.valueAsNumber;
         } else {
-          newValue = elt.value;
+          newValue = inputEl.value;
           newValue = newValue.length == 0 ? void 0 : newValue;
         }
-      } else if (elt.tagName === "SELECT") {
-        newValue = elt.value;
+      } else if (elt.tagName === "TEXTAREA") {
+        const textareaEl = elt;
+        newValue = textareaEl.value;
         newValue = newValue.length == 0 ? void 0 : newValue;
+      } else if (elt.tagName === "SELECT") {
+        const selectEl = elt;
+        newValue = selectEl.value;
       }
       if (oldValue !== newValue) {
-        if (obj instanceof RecoPageData) {
-          obj.setField(fieldname, newValue);
-        } else obj[fieldname] = newValue;
+        this.setValue(newValue, metaClassname, id, fieldname);
       }
     }
-    refreshUIDynForKey(key, keysObjects = {}) {
-      const elts = this.dynElts[key];
-      if (!elts) return;
-      const [, metaClassname, id, fieldname] = key.split("/");
-      const keyPrefix = `/${metaClassname}/${id}/`;
-      let obj = keysObjects[keyPrefix];
-      if (!obj) {
-        const metaclass = this.ui.app.metaClassListDict.getValueFor(metaClassname);
-        if (!metaclass) throw new Error(`MetaClass not found for ${metaClassname}`);
-        obj = this.ui.app.existingObject(metaclass, id);
-        if (obj) keysObjects[keyPrefix] = obj;
-      }
-      let value;
-      if (obj instanceof RecoPageData) {
-        value = obj.getField(fieldname);
-      } else {
-        value = obj ? obj[fieldname] : void 0;
-      }
-      for (const elt of elts) {
-        let type = elt.getAttribute("reco");
-        if (type == "value" && ["INPUT", "TEXTAREA"].indexOf(elt.tagName) !== -1) {
-          if (elt.getAttribute("type") === "date" && value) {
-            elt.valueAsDate = value;
-          } else if (elt.getAttribute("type") === "boolean") {
-            elt.checked = value;
-          } else if (elt.getAttribute("type") === "number") {
-            elt.valueAsNumber = value ?? 0;
-          } else {
-            elt.value = value ?? "";
-          }
-        } else if (type == "value" && "SELECT" == elt.tagName) {
-          elt.value = value ?? "";
+    refreshUIDynForElt(key, attname, elt) {
+      if (attname == "@value" && "INPUT" == elt.tagName) {
+        const [, metaClassname, id, fieldname] = elt.getAttribute(attname).split("/");
+        const value = this.getValue(metaClassname, id, fieldname);
+        if (elt.getAttribute("type") === "date" && value) {
+          elt.valueAsDate = value;
+        } else if (elt.getAttribute("type") === "boolean") {
+          elt.checked = value;
+        } else if (elt.getAttribute("type") === "number") {
+          elt.valueAsNumber = value ?? 0;
         } else {
-          if (type == "innertext") {
-            if (value instanceof Date) {
-              elt.innerText = Reco.Date2YYYYMMDD(value);
-            } else {
-              elt.innerText = "" + (value ?? "");
-            }
-          } else if (type == "info") {
-            if (value instanceof Date) {
-              elt.setAttribute("@info", Reco.Date2YYYYMMDD(value));
-            } else {
-              elt.setAttribute("@info", "" + (value ?? ""));
-            }
+          elt.value = value ?? "";
+        }
+      } else if (attname == "@value" && "TEXTAREA" == elt.tagName) {
+        const [, metaClassname, id, fieldname] = elt.getAttribute(attname).split("/");
+        const value = this.getValue(metaClassname, id, fieldname);
+        elt.value = value ?? "";
+      } else if (attname == "@value" && "SELECT" == elt.tagName) {
+        const [, metaClassname, id, fieldname] = elt.getAttribute(attname).split("/");
+        const value = this.getValue(metaClassname, id, fieldname);
+        elt.value = value ?? "";
+      } else if (attname == "@value" && "OPTION" == elt.tagName) {
+        const [, metaClassname, id, fieldname] = elt.getAttribute(attname).split("/");
+        const value = this.getValue(metaClassname, id, fieldname);
+        elt.value = value ?? "";
+      } else if (attname == "@innertext") {
+        const [, metaClassname, id, fieldname] = elt.getAttribute(attname).split("/");
+        const value = this.getValue(metaClassname, id, fieldname);
+        if (value instanceof Date) {
+          elt.innerText = Reco.dt2txt(value);
+        } else {
+          elt.innerText = "" + (value ?? "");
+        }
+      } else if (attname == "@info") {
+        const [, metaClassname, id, fieldname] = elt.getAttribute(attname).split("/");
+        const value = this.getValue(metaClassname, id, fieldname);
+        if (value instanceof Date) {
+          elt.setAttribute("info", Reco.dt2txt(value));
+        } else {
+          elt.setAttribute("info", "" + (value ?? ""));
+        }
+      } else if (attname == "@id") {
+        const [, metaClassname, id, fieldname] = elt.getAttribute(attname).split("/");
+        const value = this.getValue(metaClassname, id, fieldname);
+        elt.id = "" + (value ?? "");
+      } else if (attname == "@class") {
+        let newClasses = "";
+        const attValuesTxt = elt.getAttribute(attname);
+        const attValues = attValuesTxt.split(",");
+        for (const attValue of attValues) {
+          const [, metaClassname, id, fieldname] = attValue.split("/");
+          const value = this.getValue(metaClassname, id, fieldname);
+          newClasses = (newClasses + " " + (value ?? "")).trim();
+        }
+        const oldClasses = elt.getAttribute("recoclass");
+        if (oldClasses) {
+          for (const oldClass of oldClasses.split(" ")) {
+            if (elt.classList.contains(oldClass))
+              elt.classList.remove(oldClass);
           }
+        }
+        if (newClasses.length > 0) {
+          const newClassesArr = newClasses.split(" ");
+          for (const newClass of newClassesArr) {
+            if (!elt.classList.contains(newClass))
+              elt.classList.add(newClass);
+          }
+        }
+        elt.setAttribute("recoclass", newClasses);
+      }
+    }
+    refreshUIDynForKey(key) {
+      const attnameEltsMap = this.dynElts[key];
+      if (!attnameEltsMap)
+        return;
+      for (const attname in attnameEltsMap) {
+        for (const elt of attnameEltsMap[attname]) {
+          this.refreshUIDynForElt(key, attname, elt);
         }
       }
     }
     notifyChange(action, key, oldVal, newVal) {
       this.refreshUIDynForKey(key);
     }
+    action(elt) {
+      alert(`Action @name="${elt.getAttribute("@name")}", @info="${elt.getAttribute("@info")}"`);
+    }
   };
 
-  // app.demo/src/demo-app.ts
+  // app.demo/src/demo-app.js
   var DemoApp = class extends RecoApp {
     constructor() {
       super("DemoApp");
       const metaClassDemoPerson = new RecoMetaClass(DemoPerson);
       const metaClassDemoAddress = new RecoMetaClass(DemoAddress);
       const metaClassDemoCountry = new RecoMetaClass(DemoCountry);
-      new RecoMetaField(metaClassDemoPerson, "firstname", "string" /* string */);
-      new RecoMetaField(metaClassDemoPerson, "lastname", "string" /* string */);
-      new RecoMetaField(metaClassDemoPerson, "birthdate", "Date" /* Date */);
-      new RecoMetaField(metaClassDemoPerson, "countryId", "Ref" /* Ref */).setTargetMetaClass(metaClassDemoCountry);
-      const persAddressIdsField = new RecoMetaField(metaClassDemoPerson, "addressIds", "List" /* List */).setTargetMetaClass(metaClassDemoAddress, true);
-      const addrPersonIdField = new RecoMetaField(metaClassDemoAddress, "personId", "Ref" /* Ref */).setTargetMetaClass(metaClassDemoPerson);
-      new RecoMetaField(metaClassDemoAddress, "lines", "string" /* string */);
-      new RecoMetaField(metaClassDemoAddress, "city", "string" /* string */);
-      new RecoMetaField(metaClassDemoAddress, "countryId", "Ref" /* Ref */).setTargetMetaClass(metaClassDemoCountry);
-      new RecoMetaField(metaClassDemoCountry, "code", "string" /* string */);
-      new RecoMetaField(metaClassDemoCountry, "name", "string" /* string */);
-      persAddressIdsField.setBackMetaField(addrPersonIdField);
-      addrPersonIdField.setBackMetaField(persAddressIdsField);
+      new RecoMetaField(metaClassDemoPerson, "firstname", RecoTypeNames.string);
+      new RecoMetaField(metaClassDemoPerson, "lastname", RecoTypeNames.string);
+      new RecoMetaField(metaClassDemoPerson, "birthdate", RecoTypeNames.Date);
+      new RecoMetaField(metaClassDemoPerson, "countryId", RecoTypeNames.Ref, metaClassDemoCountry);
+      new RecoMetaField(metaClassDemoPerson, "addressIds", RecoTypeNames.List, metaClassDemoAddress).setCascadeDel(true);
+      new RecoMetaField(metaClassDemoAddress, "personId", RecoTypeNames.Ref, metaClassDemoPerson, "addressIds");
+      new RecoMetaField(metaClassDemoAddress, "lines", RecoTypeNames.string);
+      new RecoMetaField(metaClassDemoAddress, "city", RecoTypeNames.string);
+      new RecoMetaField(metaClassDemoAddress, "countryId", RecoTypeNames.Ref, metaClassDemoCountry);
+      new RecoMetaField(metaClassDemoCountry, "code", RecoTypeNames.string);
+      new RecoMetaField(metaClassDemoCountry, "name", RecoTypeNames.string);
       this.metaClassListDict.setValue("DemoPerson", DemoPerson.metaClass);
       this.metaClassListDict.setValue("DemoAddress", DemoAddress.metaClass);
       this.metaClassListDict.setValue("DemoCountry", DemoCountry.metaClass);
@@ -1397,9 +1625,6 @@ button {
     static metaClass;
     constructor(app, id = void 0, metaClass = _DemoPerson.metaClass) {
       super(app, id, metaClass);
-    }
-    get id() {
-      return this.$id;
     }
     get firstname() {
       return this.getField("firstname");
@@ -1419,32 +1644,19 @@ button {
     set birthdate(value) {
       this.setField("birthdate", value);
     }
-    get birthdateYYYYMMDD() {
-      return Reco.Date2YYYYMMDD(this.birthdate);
-    }
-    set birthdateYYYYMMDD(value) {
-      this.birthdate = Reco.YYYYMMDD2Date(value);
-    }
     get countryId() {
       return this.getField("countryId");
     }
     set countryId(value) {
       this.setField("countryId", value);
     }
-    get country() {
-      return this.$app.existingObject(DemoCountry.metaClass, this.countryId);
-    }
-    set country(value) {
-      this.countryId = value ? value.$id : void 0;
-    }
-    get countryName() {
-      let cty = this.country;
-      return cty ? cty.name : void 0;
-    }
     get addressIds() {
       return this.getListIds("addressIds");
     }
-    get addresses() {
+    get country_() {
+      return this.$app.existingObject(DemoCountry.metaClass, this.countryId);
+    }
+    get addresses_() {
       return this.$app.existingObjects(DemoAddress.metaClass, this.addressIds);
     }
   };
@@ -1453,20 +1665,11 @@ button {
     constructor(app, id = void 0, metaClass = _DemoAddress.metaClass) {
       super(app, id, metaClass);
     }
-    get id() {
-      return this.$id;
-    }
     get personId() {
       return this.getField("personId");
     }
     set personId(value) {
       this.setField("personId", value);
-    }
-    get person() {
-      return this.$app.existingObject(DemoPerson.metaClass, this.personId);
-    }
-    set person(value) {
-      this.personId = value ? value.$id : void 0;
     }
     get lines() {
       return this.getField("lines");
@@ -1486,24 +1689,17 @@ button {
     set countryId(value) {
       this.setField("countryId", value);
     }
-    get country() {
+    get person_() {
+      return this.$app.existingObject(DemoPerson.metaClass, this.personId);
+    }
+    get country_() {
       return this.$app.existingObject(DemoCountry.metaClass, this.countryId);
-    }
-    get countryName() {
-      let cty = this.country;
-      return cty ? cty.name : void 0;
-    }
-    set country(value) {
-      this.countryId = value ? value.$id : void 0;
     }
   };
   var DemoCountry = class _DemoCountry extends RecoGenericClass {
     static metaClass;
     constructor(app, id = void 0, metaClass = _DemoCountry.metaClass) {
       super(app, id, metaClass);
-    }
-    get id() {
-      return this.$id;
     }
     get code() {
       return this.getField("code");
@@ -1517,22 +1713,19 @@ button {
     set name(value) {
       this.setField("name", value);
     }
-    get descr() {
-      return this.code + ":" + this.name;
-    }
   };
 
-  // app.demo/src/demo-dataset.ts
+  // app.demo/src/demo-dataset.js
   function demoDatasetGen(app) {
     app.getDb(RECO_DEFAULT_DB_NAME).clearData();
     new DemoCountry(app, "fr").setFields({ code: "FR", name: "France" });
     new DemoCountry(app, "de").setFields({ code: "DE", name: "Germany" });
     new DemoCountry(app, "en").setFields({ code: "EN", name: "England" });
     new DemoCountry(app, "usa").setFields({ code: "USA", name: "United States of America" });
-    new DemoPerson(app, "p1").setFields({ firstname: "Mickey", lastname: "Mouse", countryId: "fr", birthdate: Reco.YYYYMMDD2Date("1930-12-25") });
-    new DemoPerson(app, "p2").setFields({ firstname: "Mini", lastname: "Mouse", countryId: "en", birthdate: Reco.YYYYMMDD2Date("1935-05-01") });
-    new DemoPerson(app, "p3").setFields({ firstname: "Donald", lastname: "Duck", countryId: "de", birthdate: Reco.YYYYMMDD2Date("1934-03-10") });
-    new DemoPerson(app, "p4").setFields({ firstname: "Daisy", lastname: "Duck", countryId: "usa", birthdate: Reco.YYYYMMDD2Date("1937-01-01") });
+    new DemoPerson(app, "p1").setFields({ firstname: "Mickey", lastname: "Mouse", countryId: "fr", birthdate: Reco.txt2dt("1930-12-25") });
+    new DemoPerson(app, "p2").setFields({ firstname: "Mini", lastname: "Mouse", countryId: "en", birthdate: Reco.txt2dt("1935-05-01") });
+    new DemoPerson(app, "p3").setFields({ firstname: "Donald", lastname: "Duck", countryId: "de", birthdate: Reco.txt2dt("1934-03-10") });
+    new DemoPerson(app, "p4").setFields({ firstname: "Daisy", lastname: "Duck", countryId: "usa", birthdate: Reco.txt2dt("1937-01-01") });
     new DemoAddress(app, "a1").setFields({ lines: "10 Downing Street", city: "London", countryId: "en", personId: "p1" });
     new DemoAddress(app, "a2").setFields({ lines: "12 avenue des Champs-\xC9lys\xE9es", city: "Paris", countryId: "fr", personId: "p1" });
     new DemoAddress(app, "a3").setFields({ lines: "1600 Pennsylvania Avenue NW", city: "Washington", countryId: "usa", personId: "p1" });
@@ -1542,6 +1735,9 @@ button {
 
   // app.demo/src/demo-ui.ts
   var DemoUI = class extends RecoUI {
+    get countryIds() {
+      return this.app.getAllObjectIds(DemoCountry.metaClass);
+    }
     constructor() {
       super(new DemoApp());
       this.init();
@@ -1554,32 +1750,29 @@ button {
     get webFileIds() {
       return this.ui.app.getAllObjectIds(RecoLocalStorageFile.metaClass);
     }
-    get newFileName() {
-      return this.pageData.getField("newFileName");
-    }
     constructor(ui) {
       super(ui);
-      this.ui.app.getDb(RECO_DEFAULT_DB_NAME).clearData();
+      this.ui.app.clearDefaultData();
     }
     async action(elt) {
       const actionName = elt.getAttribute("@name");
-      const actionInfo = elt.getAttribute("@info");
+      const actionInfo = elt.getAttribute("info");
       if (actionName === "createDemo") {
         demoDatasetGen(this.ui.app);
         this.ui.save("demo");
         new DemoPersonListPage(this.ui).display();
       } else if (actionName === "createFile") {
-        if (!this.newFileName) {
+        const newFilename = this.pageData.getField("newFileName");
+        if (!newFilename) {
           alert("File name is required");
           return;
         }
-        const newFileName = this.newFileName;
+        const newFileName = newFilename;
         this.ui.app.getDb(RECO_DEFAULT_DB_NAME).clearData();
         this.ui.save(newFileName);
         new DemoPersonListPage(this.ui).display();
       } else if (actionName === "openWebFile" && actionInfo) {
-        this.ui.app.getDb(RECO_DEFAULT_DB_NAME).clearData();
-        this.ui.load(actionInfo);
+        this.ui.load(actionInfo, true);
         new DemoPersonListPage(this.ui).display();
       } else if (actionName === "delWebFile" && actionInfo) {
         if (!confirm("Confirm deletion of " + actionInfo + "?")) {
@@ -1588,23 +1781,18 @@ button {
         this.ui.localStorage.deleteFile(actionInfo);
         this.display();
       } else if (actionName === "import") {
-        if (await this.ui.importFromDiskFile())
+        if (await this.ui.importFromDiskFile(true))
           new DemoPersonListPage(this.ui).display();
       }
     }
   };
   var DemoPersonListPage = class extends RecoPage {
-    personIds = [];
-    constructor(ui) {
-      super(ui);
-    }
-    async display() {
-      this.personIds = this.ui.app.getAllObjectIds(DemoPerson.metaClass);
-      await super.display();
+    get personIds() {
+      return this.ui.app.getAllObjectIds(DemoPerson.metaClass);
     }
     action(elt) {
       const actionName = elt.getAttribute("@name");
-      const actionInfo = elt.getAttribute("@info");
+      const actionInfo = elt.getAttribute("info");
       if (actionName === "openPerson" && actionInfo) {
         new DemoPersonPage(this.ui, actionInfo).display();
       } else if (actionName === "delPerson" && actionInfo) {
@@ -1630,17 +1818,9 @@ button {
     }
   };
   var DemoCountryListPage = class extends RecoPage {
-    countryIds = [];
-    constructor(ui) {
-      super(ui);
-    }
-    async display() {
-      this.countryIds = this.ui.app.getAllObjectIds(DemoCountry.metaClass);
-      await super.display();
-    }
     action(elt) {
       const actionName = elt.getAttribute("@name");
-      const actionInfo = elt.getAttribute("@info");
+      const actionInfo = elt.getAttribute("info");
       if (actionName === "delCountry" && actionInfo) {
         const country = new DemoCountry(this.ui.app, actionInfo);
         if (confirm(`Confirm deletion of ${country.name}?`)) {
@@ -1656,26 +1836,19 @@ button {
     }
   };
   var DemoPersonPage = class extends RecoPage {
-    _personId;
-    get personId() {
-      return this._personId;
-    }
-    get person() {
-      return this.ui.app.getObject(DemoPerson.metaClass, this._personId);
-    }
+    personId;
     constructor(ui, personId) {
       super(ui);
-      this._personId = personId;
-      this.pageData.setField("countryIds", this.ui.app.getAllObjectIds(DemoCountry.metaClass));
+      this.personId = personId;
     }
     action(elt) {
       const actionName = elt.getAttribute("@name");
-      const actionInfo = elt.getAttribute("@info");
+      const actionInfo = elt.getAttribute("info");
       if (actionName === "openAddress" && actionInfo) {
         new DemoAddressPage(this.ui, actionInfo).display();
       } else if (actionName === "delAddress" && actionInfo) {
         const addr = new DemoAddress(this.ui.app, actionInfo);
-        if (confirm(`Confirm deletion of ${addr.city} ${addr.countryName}?`)) {
+        if (confirm(`Confirm deletion of ${addr.city} ${addr.country_?.name}?`)) {
           addr.delete();
           this.display();
         }
@@ -1689,21 +1862,16 @@ button {
     }
   };
   var DemoAddressPage = class extends RecoPage {
-    _addressId;
-    get addressId() {
-      return this._addressId;
-    }
+    addressId;
     get address() {
-      return this.ui.app.getObject(DemoAddress.metaClass, this._addressId);
+      return this.ui.app.getObject(DemoAddress.metaClass, this.addressId);
     }
     constructor(ui, addressId) {
       super(ui);
-      this._addressId = addressId;
-      this.pageData.setField("countryIds", this.ui.app.getAllObjectIds(DemoCountry.metaClass));
+      this.addressId = addressId;
     }
     action(elt) {
       const actionName = elt.getAttribute("@name");
-      const actionInfo = elt.getAttribute("@info");
       if (actionName === "close") {
         new DemoPersonPage(this.ui, this.address.personId).display();
       }
