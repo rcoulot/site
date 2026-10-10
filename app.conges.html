@@ -1104,12 +1104,24 @@ button.FLEX.FLEX-COURANT {
     }
     // --------------------------------------------------------------------------------------------
     async showSaveFilePicker() {
-      const fileHandle = await window.showSaveFilePicker(this.fileShowOption);
+      const fileShowOption = {
+        "suggestedName": this.fileShowOption.suggestedName,
+        "excludeAcceptAllOption": false,
+        "multiple": false,
+        "startIn": "documents"
+      };
+      const fileHandle = await window.showSaveFilePicker(fileShowOption);
       return fileHandle.name.endsWith(this.fileExtension) ? fileHandle : void 0;
     }
     // --------------------------------------------------------------------------------------------
     async showOpenFilePicker() {
-      const fileHandle = (await window.showOpenFilePicker(this.fileShowOption))[0];
+      const fileShowOption = {
+        "suggestedName": this.fileShowOption.suggestedName,
+        "excludeAcceptAllOption": false,
+        "multiple": false,
+        "startIn": "documents"
+      };
+      const fileHandle = (await window.showOpenFilePicker(fileShowOption))[0];
       return fileHandle.name.endsWith(this.fileExtension) ? fileHandle : void 0;
     }
     // --------------------------------------------------------------------------------------------
@@ -1224,7 +1236,7 @@ button.FLEX.FLEX-COURANT {
       this.localStorage?.saveFile(fileName, content);
     }
     async importFromDiskFile(reset, dbName = RECO_DEFAULT_DB_NAME) {
-      const diskTextFile = new RecoBrowserJsonFile("Choose a file to import", this.app.name + ".json");
+      const diskTextFile = new RecoBrowserJsonFile("Choose a file to import", this.app.name + ".txt");
       if (await diskTextFile.open(false)) {
         this.diskTextFile = diskTextFile;
         const json = JSON.parse(diskTextFile.fileContent);
@@ -1237,14 +1249,14 @@ button.FLEX.FLEX-COURANT {
     }
     async exportToDiskFile(dbName = RECO_DEFAULT_DB_NAME) {
       if (!this.diskTextFile)
-        this.diskTextFile = new RecoBrowserJsonFile("Choose a file to export", this.app.name + ".json");
+        this.diskTextFile = new RecoBrowserJsonFile("Choose a file to export", this.app.name + ".txt");
       const json = this.app.toJson(dbName, true);
       this.diskTextFile.fileContent = JSON.stringify(json, null, 4);
       return await this.diskTextFile.save();
     }
     async exportToDiskAsFile(dbName = RECO_DEFAULT_DB_NAME) {
       if (!this.diskTextFile)
-        this.diskTextFile = new RecoBrowserJsonFile("Choose a file to export", this.app.name + ".json");
+        this.diskTextFile = new RecoBrowserJsonFile("Choose a file to export", this.app.name + ".txt");
       const json = this.app.toJson(dbName, true);
       this.diskTextFile.fileContent = JSON.stringify(json, null, 4);
       return await this.diskTextFile.saveAs();
