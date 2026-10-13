@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Demo</title>
+    <title>conges</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
 body {
@@ -1353,8 +1353,9 @@ button.FLEX.FLEX-COURANT {
           resolved = Reco.evalDotExp(this, dynText);
           resolved = resolved ?? "";
         }
-        exp = exp.substring(0, start) + resolved + exp.substring(end + 2);
-        start = end + 2;
+        const temp = exp.substring(0, start) + resolved;
+        exp = temp + exp.substring(end + 2);
+        start = temp.length;
       }
       return exp;
     }
@@ -1432,17 +1433,24 @@ button.FLEX.FLEX-COURANT {
         attValues = this.resolveExp(attValues);
         elt.setAttribute(attname, attValues);
         for (let attValue of attValues.split(",")) {
-          if (!attValue.startsWith("/"))
-            continue;
-          let [, metaClassname, id, fieldname] = attValue.split("/");
-          fieldname = fieldname.split(".")[0];
-          const key = `/${metaClassname}/${id}/${fieldname}`;
-          if (!this.dynElts[key])
-            this.dynElts[key] = {};
-          if (!this.dynElts[key][attname])
-            this.dynElts[key][attname] = [];
-          this.dynElts[key][attname].push(elt);
-          this.refreshUIDynForElt(key, attname, elt);
+          if (attValue.startsWith("/")) {
+            let [, metaClassname, id, fieldname] = attValue.split("/");
+            fieldname = fieldname.split(".")[0];
+            const key = `/${metaClassname}/${id}/${fieldname}`;
+            if (!this.dynElts[key])
+              this.dynElts[key] = {};
+            if (!this.dynElts[key][attname])
+              this.dynElts[key][attname] = [];
+            this.dynElts[key][attname].push(elt);
+            this.refreshUIDynForElt(key, attname, elt);
+          } else {
+            if (attname == "@class" && attValue && attValue.length > 0)
+              elt.classList.add(attValue);
+            else if (attname == "@value")
+              elt.setAttribute("value", attValue);
+            else if (attname == "@innertext")
+              elt.innerText = attValue;
+          }
         }
       }
     }
@@ -1508,6 +1516,8 @@ button.FLEX.FLEX-COURANT {
           elt.checked = value;
         } else if (elt.getAttribute("type") === "number") {
           elt.valueAsNumber = value ?? 0;
+        } else if (elt.getAttribute("type") === "checkbox") {
+          elt.checked = "" + value === "true";
         } else {
           elt.value = value ?? "";
         }
@@ -1548,9 +1558,12 @@ button.FLEX.FLEX-COURANT {
         const attValuesTxt = elt.getAttribute(attname);
         const attValues = attValuesTxt.split(",");
         for (const attValue of attValues) {
-          const [, metaClassname, id, fieldname] = attValue.split("/");
-          const value = this.getValue(metaClassname, id, fieldname);
-          newClasses = (newClasses + " " + (value ?? "")).trim();
+          if (attValue.startsWith("/")) {
+            const [, metaClassname, id, fieldname] = attValue.split("/");
+            const value = this.getValue(metaClassname, id, fieldname);
+            newClasses = (newClasses + " " + (value ?? "")).trim();
+          } else
+            newClasses = (newClasses + " " + (attValue ?? "")).trim();
         }
         const oldClasses = elt.getAttribute("recoclass");
         if (oldClasses) {
@@ -1804,6 +1817,8 @@ button.FLEX.FLEX-COURANT {
       return jourSem ? jourSem.labelCourt : "";
     }
     get weekend_() {
+      if (!this.existe)
+        return "jourInexistant";
       const day = this.dateJour.getDay();
       return day === 0 || day === 6 ? "weekend" : "weekday";
     }
