@@ -1886,6 +1886,9 @@ button.FLEX.FLEX-COURANT {
     get nouvelleAnnee() {
       return this.pageData.getField("nouvelleAnnee");
     }
+    set nouvelleAnnee(value) {
+      this.pageData.setField("nouvelleAnnee", value);
+    }
     constructor(ui) {
       super(ui);
       this.pageData.setField("nouvelleAnnee", (/* @__PURE__ */ new Date()).getFullYear());
